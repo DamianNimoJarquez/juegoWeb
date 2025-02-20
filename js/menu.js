@@ -28,7 +28,7 @@ const Menu = (function() {
           <input type="text" id="username" required>
           <br>
           <label for="password">Contraseña:</label>
-          <input type="password" id="password" required>
+          <input placeholder="kk" type="password" id="password" required>
           <br>
           <button type="submit">Crear Cuenta</button>
           <button type="button" id="cancel-btn">Cancelar</button>
