@@ -1,0 +1,162 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  font-family: Arial, sans-serif;
+  height: 100%;
+}
+
+/* Contenedor principal del juego */
+#game-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Zona Superior: Información */
+#top-info {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Contenido principal */
+#main-content {
+  display: flex;
+  flex: 1;
+}
+
+/* Panel Izquierdo y Derecho */
+#left-panel, #right-panel {
+  width: 20%;
+  background-color: #f2f2f2;
+  padding: 10px;
+}
+
+/* Panel Central */
+#center-panel {
+  flex: 1;
+  background-color: #e6e6e6;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zona Inferior: Atributos e Inventario */
+#bottom-info {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Sección dinámica en el centro */
+.hidden {
+  display: none;
+}
+
+/* Cuadrícula del mapa */
+#map-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.map-cell {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  width: 30%;
+  margin: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Indicación de celdas visitadas */
+.map-cell.visited {
+  background-color: #dff0d8;
+}
+
+/* Botones de movimiento dentro de la celda */
+#movement-options {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.move-btn {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+/* Lista de habilidades */
+#abilities-list {
+  list-style: none;
+}
+
+.ability {
+  padding: 5px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.ability.unlocked {
+  border: 1px solid #4CAF50;
+}
+
+.ability.locked {
+  opacity: 0.5;
+}
+
+/* Lista de misiones */
+#missions-list {
+  list-style: none;
+}
+
+.mission {
+  padding: 5px;
+  margin: 5px 0;
+}
+
+/* Barras de atributos */
+.bar-container {
+  display: inline-block;
+  margin: 0 10px;
+  vertical-align: middle;
+}
+
+.bar {
+  display: inline-block;
+  width: 150px;
+  height: 20px;
+  background-color: #555;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-left: 5px;
+}
+
+.bar-fill {
+  height: 100%;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+#hp-fill {
+  background-color: green;
+}
+
+#mana-fill {
+  background-color: blue;
+}
+
+#xp-fill {
+  background-color: orange;
+}
