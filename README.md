@@ -1,2 +1,2 @@
 # juegoWeb
-Juego rol texto web japones probando código
+Juego rol texto web japones probando codigo2
