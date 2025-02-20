@@ -1,4 +1,5 @@
 /* Reset básico */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -41,10 +42,19 @@ body, html {
 /* Panel Central */
 #center-panel {
   flex: 1;
-  background-color: #e6e6e6;
-  padding: 10px;
   display: flex;
-  flex-direction: column;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: center;    /* Centra verticalmente el contenido */
+  background-size: cover; /* Hace que la imagen de fondo cubra todo el panel */
+  background-position: center; /* Centra la imagen de fondo */
+  padding: 10px;
+  position: relative; /* Necesario para posicionar el contenido */
+}
+
+/* Contenedor interno para alinear el contenido a la derecha */
+#center-panel-content {
+  text-align: right; /* Alinea el texto a la derecha */
+  max-width: 100%; /* Asegura que el contenido no exceda el ancho del panel */
 }
 
 /* Zona Inferior: Atributos e Inventario */
