@@ -7,7 +7,7 @@ const Menu = (function() {
     const centerPanel = document.getElementById('center-panel');
     centerPanel.innerHTML = `
       <div id="main-menu">
-        <h1>Menú Principal2</h1>
+        <h1>Menú Principal</h1>
         <button id="new-game-btn">Nueva Partida</button>
         <button id="load-game-btn">Cargar Partida</button>
       </div>
