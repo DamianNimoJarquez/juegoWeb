@@ -1,30 +1,31 @@
 // main.js
-// Este script orquesta el flujo del juego
 document.addEventListener('DOMContentLoaded', function() {
-  // Inicializar la aplicación: mostrar el menú principal
+  // Inicia mostrando el menú principal
   Menu.showMainMenu();
   
-  // Ejemplo: función para cambiar de estado
-  // El estado puede ser 'menu', 'intro', 'map', 'combat', etc.
-  function changeGameState(state) {
+  /**
+   * changeGameState:
+   * Cambia el estado global del juego.
+   * Parámetros:
+   *   state: String que indica el nuevo estado ('menu', 'intro', 'map', 'combat', etc.)
+   *   account (opcional): Objeto de cuenta que contiene el estado del juego.
+   */
+  function changeGameState(state, account) {
     switch(state) {
       case 'menu':
         Menu.showMainMenu();
         break;
       case 'intro':
-        Intro.startIntro();
+        // Aquí se llamaría al módulo de introducción (intro.js)
+        // Pasamos el objeto account para que la introducción pueda inicializarse con el estado del juego
+        Intro.startIntro(account);
         break;
-      case 'map':
-        Map.loadWorldMap();
-        break;
-      case 'combat':
-        Combat.startCombat();
-        break;
+      // Otros casos para 'map', 'combat', etc.
       default:
         console.log('Estado no reconocido:', state);
     }
   }
   
-  // Exportamos la función si se desea usar en otros módulos (opcional)
+  // Hacer global la función para que otros módulos puedan llamarla
   window.changeGameState = changeGameState;
 });
