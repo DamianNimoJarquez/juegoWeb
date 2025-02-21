@@ -1,7 +1,10 @@
 // main.js
 
 document.addEventListener('DOMContentLoaded', function() {
-  Menu.showMainMenu();
+  //Menu.showMainMenu();
+  const storedAccount = localStorage.getItem('account_' + "fulano");
+  const account = JSON.parse(storedAccount);
+  Intro.startIntro( account);
 
   /**
    * changeGameState:
@@ -20,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'map':
         // Se llama a la función del módulo de mapa
         Map.loadWorldMap(params);
+		
         break;
       case 'combat':
         Combat.startCombat();

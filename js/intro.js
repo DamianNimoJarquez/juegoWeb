@@ -21,10 +21,12 @@ const Intro = (function() {
       {
         // Pantalla 1: Teleportación
         html: `
-          <div id="intro-teleport">
+          <div id="dialogo-narrador" style="padding: 40px;">
             <p>De repente, todo se vuelve oscuro...</p>
             <p>Cuando recuperas la visión, te encuentras en un mundo completamente distinto: un Japón feudal con magia en cada rincón.</p>
-            <button id="next-screen-btn">Siguiente</button>
+			<div class="boton-container" style="text-align: center;">
+				<button id="next-screen-btn">Siguiente</button>
+		    </div>
           </div>
         `
       },
@@ -32,28 +34,34 @@ const Intro = (function() {
         // Pantalla 2: El maestro aparece y habla en japonés.
         // Se carga la imagen de fondo del templo.
         html: `
-          <div id="intro-master" padding: 20px; style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.7);">
+          <div id="intro-master"  style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.9); padding: 20px;">
             <p><strong>Maestro Hiroshi (en japonés):</strong> こんにちは、旅人.</p>
-            <button id="no-entender-btn">No entiendo, habla en castellano</button>
+            <div class="boton-container" style="text-align: center;">
+				<button id="no-entender-btn">No entiendo, habla en castellano</button>
+			</div>
           </div>
         `
       },
       {
         // Pantalla 3: Tras pulsar "No entiendo", el maestro cambia a castellano y presenta al loro.
         html: `
-          <div id="intro-master" padding: 20px; style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.7);">
+          <div id="intro-master"  style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.9); padding: 20px;">
             <p><strong>Maestro Hiroshi (ahora en castellano):</strong> Perdona, pensé que lo entenderías. Mira, este es Kiiro, mi pequeño loro que también habla castellano.</p>
-            <button id="next-screen-btn">Siguiente</button>
+            <div class="boton-container" style="text-align: center;">
+				<button id="next-screen-btn">Siguiente</button>
+			</div>
           </div>
         `
       },
       {
         // Pantalla 4: Instrucciones finales: el maestro anuncia su destino y ordena ir al pueblo.
         html: `
-          <div id="intro-master" padding: 20px; style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.7);">
+          <div id="intro-master"  style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.9); padding: 20px;">
             <p><strong>Maestro Hiroshi:</strong> Pronto enfrentarás al enemigo final y yo pereceré. Pero no temas, Kiiro te guiará.</p>
             <p>Ahora, debes dirigirte al pueblo para resguardarte. El pueblo se encuentra justo debajo de donde te encuentras.</p>
-            <button id="go-to-town-btn">Ir al Pueblo</button>
+            <div class="boton-container" style="text-align: center;">
+				<button id="go-to-town-btn">Ir al Pueblo</button>
+			</div>
           </div>
         `
       }
@@ -99,7 +107,8 @@ const Intro = (function() {
     if (goTownBtn) {
       goTownBtn.addEventListener('click', function() {
         // Se cambia al estado del mapa con parámetros para restringir a la celda del pueblo
-        window.changeGameState('map', { restricted: true, townCell: { row: 2, col: 8 } });
+        //window.changeGameState('map', { restricted: true, townCell: { row: 2, col: 8 } });
+		window.changeGameState('map', { restricted: true });
       });
     }
   }

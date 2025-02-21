@@ -1,8 +1,12 @@
 // menu.js
-// Este módulo gestiona el menú principal y la validación/creación de cuentas usando localStorage
+// Este módulo gestiona el menú principal y la validación/creación de cuentas usando localStorage.
+// Además, al crear una nueva partida, inicializa el estado global del juego en window.gameState.
 
 const Menu = (function() {
-  // Muestra el menú principal en el área central
+  /**
+   * showMainMenu:
+   * Muestra el menú principal en el área central.
+   */
   function showMainMenu() {
     const centerPanel = document.getElementById('center-panel');
     centerPanel.innerHTML = `
@@ -12,12 +16,15 @@ const Menu = (function() {
         <button id="load-game-btn">Cargar Partida</button>
       </div>
     `;
-    // Asignar eventos a los botones
+    // Asignar eventos a los botones del menú principal
     document.getElementById('new-game-btn').addEventListener('click', showNewGameForm);
     document.getElementById('load-game-btn').addEventListener('click', showLoadGameForm);
   }
 
-  // Muestra el formulario para crear una nueva partida
+  /**
+   * showNewGameForm:
+   * Muestra el formulario para crear una nueva partida.
+   */
   function showNewGameForm() {
     const centerPanel = document.getElementById('center-panel');
     centerPanel.innerHTML = `
@@ -35,13 +42,18 @@ const Menu = (function() {
         </form>
       </div>
     `;
-    // Asignar eventos al formulario
+    // Asignar eventos al formulario de registro y al botón de cancelar
     document.getElementById('register-form').addEventListener('submit', handleNewGame);
     document.getElementById('cancel-btn').addEventListener('click', showMainMenu);
   }
 
-  // Maneja el registro de un nuevo usuario
-  // Recibe el evento del formulario y extrae usuario/contraseña
+  /**
+   * handleNewGame:
+   * Maneja el registro de un nuevo usuario.
+   * Extrae usuario y contraseña, verifica si ya existe y, en caso contrario, crea la cuenta.
+   * Además, inicializa el estado global del juego en window.gameState.
+   * @param {Event} event - Evento del formulario.
+   */
   function handleNewGame(event) {
     event.preventDefault();
     const username = document.getElementById('username').value.trim();
@@ -58,30 +70,25 @@ const Menu = (function() {
       return;
     }
     
-    // Crear la cuenta guardando un objeto JSON con datos iniciales
+    // Crear la cuenta con datos iniciales
     const account = {
       username: username,
-      password: password, // Nota: En un entorno real, nunca guardar contraseñas en texto plano.
-      gameState: {
-        // Estado inicial del juego (mapa, personaje, narrativa, etc.)
-        playerLevel: 1,
-        xp: 0,
-        attributes: { hp: 100, mana: 50, attack: 10, defense: 5, agility: 5, concentration: 5 },
-        coins: 0,
-        mapState: {},  // Aquí se almacenarán los datos del mapa, celdas, etc.
-        currentScene: 'intro'
-      }
+      password: password, // Nota: En producción, no se deben guardar contraseñas en texto plano.
+      gameState: window.gameState
     };
     
     // Guardar la cuenta en localStorage
     localStorage.setItem('account_' + username, JSON.stringify(account));
+    
     alert('Cuenta creada exitosamente. Iniciando la partida...');
-    // Una vez creada la cuenta, iniciar la introducción o cargar el estado del juego
-    // Por ejemplo, llamar a la función que cambia el estado del juego:
+    // Iniciar la introducción pasando el objeto account (opcional)
     window.changeGameState('intro', account);
   }
 
-  // Muestra el formulario para cargar una partida existente
+  /**
+   * showLoadGameForm:
+   * Muestra el formulario para cargar una partida existente.
+   */
   function showLoadGameForm() {
     const centerPanel = document.getElementById('center-panel');
     centerPanel.innerHTML = `
@@ -103,7 +110,12 @@ const Menu = (function() {
     document.getElementById('cancel-load-btn').addEventListener('click', showMainMenu);
   }
 
-  // Maneja la carga de una partida existente
+  /**
+   * handleLoadGame:
+   * Maneja la carga de una partida existente.
+   * Verifica el usuario y la contraseña, y carga el estado guardado.
+   * @param {Event} event - Evento del formulario.
+   */
   function handleLoadGame(event) {
     event.preventDefault();
     const username = document.getElementById('login-username').value.trim();
@@ -122,11 +134,15 @@ const Menu = (function() {
     }
     
     alert('Cuenta cargada exitosamente. Continuando la partida...');
+    
+    // Inicializar el estado global del juego con los datos cargados
+    window.gameState = account.gameState;
+    
     // Inicia la partida cargando el estado guardado
     window.changeGameState('intro', account);
   }
 
-  // Exponer las funciones públicas
+  // Exponer las funciones públicas del módulo
   return {
     showMainMenu: showMainMenu
   };

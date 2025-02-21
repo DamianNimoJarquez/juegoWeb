@@ -53,7 +53,7 @@ body, html {
 
 /* Contenedor interno para alinear el contenido a la derecha */
 #center-panel-content {
-  text-align: right; /* Alinea el texto a la derecha */
+  text-align: left; /* Alinea el texto a la derecha */
   max-width: 100%; /* Asegura que el contenido no exceda el ancho del panel */
 }
 
@@ -71,6 +71,7 @@ body, html {
 }
 
 /* Cuadrícula del mapa */
+/*
 #map-grid {
   display: flex;
   flex-wrap: wrap;
@@ -87,6 +88,28 @@ body, html {
   text-align: center;
   cursor: pointer;
 }
+*/
+/* Cuadrícula del mapa */
+#map-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.map-cell {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+
+
+
+
 
 /* Indicación de celdas visitadas */
 .map-cell.visited {

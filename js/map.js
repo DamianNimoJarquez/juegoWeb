@@ -1,92 +1,95 @@
-// map.js
-// Este módulo gestiona la vista del mapa.
+// js/map.js
+// Este módulo gestiona la vista del mapa y utiliza window.gameState.map,
+// que se inicializa con instancias de la clase Cell.
+
 const Map = (function() {
-  /**
-   * loadWorldMap:
-   * Carga la vista del mapa en el área central.
-   * @param {Object} params - Parámetros adicionales, por ejemplo:
-   *    { restricted: true, townCell: { row: 2, col: 8 } }
-   */
-  function loadWorldMap(params) {
-    const centerPanel = document.getElementById('center-panel');
-    // Se crea una vista del mapa con fondo de mapa (puede ser una imagen de fondo)
-	document.getElementById('center-panel').style.backgroundImage = "url('assets/images/img3.png')";
-    centerPanel.innerHTML = `
-      <div id="intro-master" padding: 20px; style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.7); min-height: 300px;">
-        <p>Mapa: Selecciona una celda para viajar rápido.</p>
-        <div id="map-grid">
-          <!-- Ejemplo: Generamos una cuadrícula 15x15, pero aquí mostraremos un ejemplo simple -->
-          ${generateMapCells(params)}
-        </div>
-        ${params && params.restricted ? '' : '<button id="back-to-cell-btn">Volver a la celda</button>'}
-      </div>
-    `;
-    attachMapCellEvents(params);
-    // Si existe el botón "Volver a la celda", asignar su evento para volver al estado anterior.
-    const backBtn = document.getElementById('back-to-cell-btn');
-    if (backBtn) {
-      backBtn.addEventListener('click', function() {
-        // Se llama a una función (a definir en otro módulo) para restaurar el estado de la celda actual
-        // Por ahora, simulamos la acción con un alert.
-        alert('Volviendo a la celda actual.');
-        window.changeGameState('cell'); // Este estado se definiría en el módulo correspondiente.
-      });
-    }
+	function kk(){
+		console.log("kk");
+	}
+/**
+ * loadWorldMap:
+ * Carga la vista del mapa en el panel central.
+ * @param {Object} params - Parámetros adicionales, por ejemplo:
+ *    { restricted: true } indica que solo se permite seleccionar la celda del pueblo.
+ */
+function loadWorldMap(params) {
+  // Inicializar el mapa si no existe en el estado global.
+  if (!window.gameState.map) {
+	  globalState.initializeMap(globalState.tamMapa, globalState.tamMapa);
   }
+  const centerPanel = document.getElementById('center-panel');
+
+  // Establecer el fondo del panel central (imagen general del mapa)
+  centerPanel.style.backgroundImage = "url('assets/images/mapa.png')";
+  centerPanel.style.backgroundSize = "cover";
+  centerPanel.style.backgroundPosition = "center";
   
-  /**
-   * generateMapCells:
-   * Genera el HTML para las celdas del mapa.
-   * @param {Object} params - Parámetros de restricción.
-   * @returns {string} - HTML de las celdas.
-   */
-  function generateMapCells(params) {
-    let html = '';
-    // Para simplificar, generamos una cuadrícula 3x3 de ejemplo.
-    for (let i = 1; i <= 9; i++) {
-      // Si hay restricción, solo la celda del pueblo (por ejemplo, celda 5) estará habilitada.
-      let classes = 'map-cell';
-      if (i === 5) classes += ' visited';
-      if (params && params.restricted && i !== 5) {
-        classes += ' disabled';
-      }
-      html += `<div class="${classes}" data-zone="${i}">Celda ${i}</div>`;
-    }
-    return html;
+  // Generar el HTML del mapa usando el modelo global
+  let html = `<div id="world-map-view" style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.9); padding: 20px;">
+                <p>Mapa: Selecciona una celda para viajar rápido.</p>
+                <div id="map-grid" style="--cols: ${window.gameState.map.length};">`;
+  window.gameState.map.forEach(cell => {
+	  cell.forEach(casilla =>{
+		html += casilla.generateHTML(params && params.restricted);
+	  });
+  });
+  html += `</div>`;
+  // Si no estamos en modo restringido, mostramos el botón "Volver a la celda"
+  if (!params || !params.restricted) {
+    html += `<button id="back-to-cell-btn">Volver a la celda</button>`;
   }
+  html += `</div>`;
   
-  /**
-   * attachMapCellEvents:
-   * Asigna eventos a las celdas del mapa.
-   * @param {Object} params - Parámetros de restricción.
-   */
-  function attachMapCellEvents(params) {
-    const mapCells = document.querySelectorAll('.map-cell');
-    mapCells.forEach(cell => {
-      cell.addEventListener('click', function() {
-        // Si el mapa está restringido, solo se permite seleccionar la celda designada (pueblo, en este ejemplo, celda 5)
-        if (params && params.restricted) {
-          if (cell.getAttribute('data-zone') === '5') {
-            alert('Cargando el pueblo...');
-            // Cambiar al estado "cell" con la celda del pueblo
-            window.changeGameState('cell', { cellId: 'celda_5' });
-          } else {
-            alert('Solo puedes seleccionar el pueblo en este momento.');
-          }
-        } else {
-          // En un mapa sin restricción, se permite seleccionar cualquier celda (para viaje rápido)
-          if (cell.classList.contains('visited')) {
-            alert('Viajando rápido a ' + cell.textContent);
-            // Aquí se actualizaría la información contextual de la celda
-          } else {
-            alert('Esta zona no ha sido visitada. Explórala de forma normal.');
-          }
-        }
-      });
+  centerPanel.innerHTML = html;
+  
+  attachMapCellEvents(params);
+  
+  // Asignar el evento al botón "Volver a la celda" si existe.
+  const backBtn = document.getElementById('back-to-cell-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', function() {
+      alert('Volviendo a la celda actual.');
+      window.changeGameState('inside', { cellId: window.gameState.currentCellId });
     });
   }
-  
-  return {
+}
+
+/**
+ * attachMapCellEvents:
+ * Asigna eventos de clic a cada celda generada.
+ * @param {Object} params - Parámetros adicionales.
+ */
+function attachMapCellEvents(params) {
+  const mapCells = document.querySelectorAll('.map-cell');
+  mapCells.forEach(cellElem => {
+    cellElem.addEventListener('click', function() {
+      const cellId = parseInt(cellElem.getAttribute('data-cell-id'));
+      // Si está en modo restringido, solo se permite la celda del pueblo.
+      if (params && params.restricted) {
+        if (cellId === 5) { // En este ejemplo, la celda con id 5 es la del pueblo.
+          alert('Cargando la celda del Pueblo...');
+          window.gameState.currentCellId = cellId;
+          window.changeGameState('inside', { cellId: cellId });
+        } else {
+          alert('Solo puedes seleccionar la celda del pueblo en este momento.');
+        }
+      } else {
+        // En modo normal, si la celda fue visitada, se permite viajar rápido.
+        if (cellElem.classList.contains('visited')) {
+          alert('Viajando rápido a la celda ' + cellId);
+          window.gameState.currentCellId = cellId;
+          window.changeGameState('cell', { cellId: cellId });
+        } else {
+          alert('Esta celda no ha sido visitada aún. Explora la zona para desbloquearla.');
+        }
+      }
+    });
+  });
+}
+// Exponer las funciones del módulo Map para que otros módulos puedan llamarlas.
+
+return {
     loadWorldMap: loadWorldMap
   };
 })();
+
