@@ -2,9 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   //Menu.showMainMenu();
-  const storedAccount = localStorage.getItem('account_' + "fulano");
-  const account = JSON.parse(storedAccount);
-  Intro.startIntro( account);
+  //const storedAccount = localStorage.getItem('account_' + "fulano");
+  //const account = JSON.parse(storedAccount);
+  Intro.startIntro( );
 
   /**
    * changeGameState:
@@ -18,16 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
         Menu.showMainMenu();
         break;
       case 'intro':
-        Intro.startIntro(params && params.account);
+        //Intro.startIntro(params && params.account);
+		Intro.startIntro(params && params.account);
         break;
       case 'map':
         // Se llama a la función del módulo de mapa
         Map.loadWorldMap(params);
-		
         break;
       case 'combat':
         Combat.startCombat();
         break;
+	  case 'inside':
+	    Casilla.loadCellContent(params);
+		break;
       default:
         console.log('Estado no reconocido:', state);
     }

@@ -12,8 +12,8 @@ const Intro = (function() {
    * Inicia la introducción con el objeto de cuenta.
    * @param {Object} acc - Estado inicial de la partida.
    */
-  function startIntro(acc) {
-    account = acc;
+  function startIntro() {
+    //account = acc;
     currentScreenIndex = 0;
 
     // Definición de las pantallas del tutorial
@@ -107,8 +107,9 @@ const Intro = (function() {
     if (goTownBtn) {
       goTownBtn.addEventListener('click', function() {
         // Se cambia al estado del mapa con parámetros para restringir a la celda del pueblo
-        //window.changeGameState('map', { restricted: true, townCell: { row: 2, col: 8 } });
-		window.changeGameState('map', { restricted: true });
+        //window.changeGameState('map', { tutorial: true, townCell: { row: 2, col: 8 } });
+		
+		window.changeGameState('map', { tutorial: true });
       });
     }
   }

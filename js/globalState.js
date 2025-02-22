@@ -15,11 +15,18 @@ window.gameState = {
       concentration: 5
     },
     coins: 0,
+	inventory: [],       // Array para almacenar objetos (instancias de Item o sus subclases)
+    equipment: {
+      weapon: null,
+      armor: null,
+      accessory: null
+    }
+  
     // Otras propiedades del jugador...
   },
   
   // Otros estados globales (por ejemplo, progreso de la historia)
-  
+  currentScene: 'intro'  // Ejemplo: 'intro', 'tutorial', 'pueblo', etc.
 };
 let tamMapa = 5;
 // Inicializar el mapa con celdas vacías de prueba
@@ -34,6 +41,7 @@ let tamMapa = 5;
 		//definir el pueblo. 0 tam/2
 		gameState.map[0][Math.floor(tamMapa/2)].visited = true;
 		gameState.map[0][Math.floor(tamMapa/2)].type = "town";
+		gameState.map[0][Math.floor(tamMapa/2)].name = "Pueblo Inicial";
 		gameState.map[0][Math.floor(tamMapa/2)].backgroundImage ="assets/images/img2.png";
 	}
 

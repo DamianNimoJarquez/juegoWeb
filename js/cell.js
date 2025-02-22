@@ -7,8 +7,9 @@ class Cell {
    * @param {string} backgroundImage - Ruta de la imagen de fondo para la celda.
    * @param {string} [type='normal'] - Tipo de celda ('normal', 'town', etc.).
    */
-  constructor(id, backgroundImage, type = 'normal') {
+  constructor(id, backgroundImage, type = 'normal', name = '') {
     this.id = id;
+	this.name = name;
     this.visited = false;
     this.backgroundImage = backgroundImage;
     this.type = type; // 'normal', 'town', etc.
@@ -17,18 +18,18 @@ class Cell {
   
   /**
    * Genera el HTML para mostrar la celda en el mapa.
-   * @param {boolean} restricted - Si true, solo se habilitará la celda del pueblo.
+   * @param {boolean} tutorial - Si true, solo se habilitará la celda del pueblo.
    * @returns {string} - HTML de la celda.
    */
-	generateHTML(restricted) {
+	generateHTML(tutorial) {
 		let classes = 'map-cell';
 		if (this.visited) {
 		  classes += ' visited';
 		}
-		if (restricted && this.type !== 'town') {
+		if (tutorial && this.type !== 'town') {
 		  classes += ' disabled';
 		}
-		return `<div class="${classes}" data-cell-id="${this.id}">
+		return `<div class="${classes}" data-cell-id="${this.id}" data-type="${this.type}">
 				  <span>${this.type === 'town' ? 'Pueblo' : `Celda ${this.id}`}</span>
 				</div>`;
   }

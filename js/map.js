@@ -3,20 +3,18 @@
 // que se inicializa con instancias de la clase Cell.
 
 const Map = (function() {
-	function kk(){
-		console.log("kk");
-	}
 /**
  * loadWorldMap:
  * Carga la vista del mapa en el panel central.
  * @param {Object} params - Parámetros adicionales, por ejemplo:
- *    { restricted: true } indica que solo se permite seleccionar la celda del pueblo.
+ *    { tutorial: true } indica que solo se permite seleccionar la celda del pueblo.
  */
 function loadWorldMap(params) {
   // Inicializar el mapa si no existe en el estado global.
   if (!window.gameState.map) {
 	  globalState.initializeMap(globalState.tamMapa, globalState.tamMapa);
   }
+  
   const centerPanel = document.getElementById('center-panel');
 
   // Establecer el fondo del panel central (imagen general del mapa)
@@ -30,12 +28,12 @@ function loadWorldMap(params) {
                 <div id="map-grid" style="--cols: ${window.gameState.map.length};">`;
   window.gameState.map.forEach(cell => {
 	  cell.forEach(casilla =>{
-		html += casilla.generateHTML(params && params.restricted);
+		html += casilla.generateHTML(params && params.tutorial);
 	  });
   });
   html += `</div>`;
   // Si no estamos en modo restringido, mostramos el botón "Volver a la celda"
-  if (!params || !params.restricted) {
+  if (!params || !params.tutorial) {
     html += `<button id="back-to-cell-btn">Volver a la celda</button>`;
   }
   html += `</div>`;
@@ -63,22 +61,29 @@ function attachMapCellEvents(params) {
   const mapCells = document.querySelectorAll('.map-cell');
   mapCells.forEach(cellElem => {
     cellElem.addEventListener('click', function() {
-      const cellId = parseInt(cellElem.getAttribute('data-cell-id'));
+      //const cellId = parseInt(cellElem.getAttribute('data-cell-id'));
+	  const cellId = cellElem.getAttribute('data-cell-id');
+	  const [row, col] = cellId.split('-').map(Number);
+	  const casilla = window.gameState.map[row][col];
+	  const cellType = casilla.type;
       // Si está en modo restringido, solo se permite la celda del pueblo.
-      if (params && params.restricted) {
-        if (cellId === 5) { // En este ejemplo, la celda con id 5 es la del pueblo.
-          alert('Cargando la celda del Pueblo...');
+      if (params && params.tutorial) {
+        if (cellType === 'town') { // En este ejemplo, la celda con id 5 es la del pueblo.
+          //alert('Cargando ' + casilla.name +' ...');
           window.gameState.currentCellId = cellId;
-          window.changeGameState('inside', { cellId: cellId });
+		  params.cellId = cellId;
+          window.changeGameState('inside', params );
         } else {
-          alert('Solo puedes seleccionar la celda del pueblo en este momento.');
+          //alert('Solo puedes seleccionar la celda del pueblo en este momento.');
+		  setTimeout(() => alert('Solo puedes seleccionar la celda del pueblo en este momento.'), 100);
         }
       } else {
         // En modo normal, si la celda fue visitada, se permite viajar rápido.
         if (cellElem.classList.contains('visited')) {
-          alert('Viajando rápido a la celda ' + cellId);
+          //alert('Viajando rápido a la celda ' + casilla.name);
           window.gameState.currentCellId = cellId;
-          window.changeGameState('cell', { cellId: cellId });
+		  params.cellId = cellId;
+          window.changeGameState('inside', params );
         } else {
           alert('Esta celda no ha sido visitada aún. Explora la zona para desbloquearla.');
         }
