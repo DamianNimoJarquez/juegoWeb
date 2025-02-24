@@ -32,6 +32,10 @@ function loadCellEvents(casilla_, params){
 	//Comprobar si aún estamos en el tutorial
 	if (params && params.tutorial){
 		//aún está el tutorial activo
+		window.changeGameState('tutorial');
+	}
+	else{
+		
 	}
 }
 

@@ -4,6 +4,7 @@ window.gameState = {
   map: [],          // Aquí se almacenará el modelo global del mapa (por ejemplo, gameMap)
   currentCellId: null, // La celda en la que se encuentra el jugador
   player: {
+	name: null,
     level: 1,
     xp: 0,
     attributes: {
@@ -20,13 +21,20 @@ window.gameState = {
       weapon: null,
       armor: null,
       accessory: null
-    }
+    },
+	activeQuests: [
+		// Array con las misiones activas y su progreso.
+		// Ejemplo:
+		// { id: "quest_001", description: "Consigue 10 hierbas", progress: 3, total: 10 }
+	],
   
     // Otras propiedades del jugador...
   },
+	npcs: {},
   
   // Otros estados globales (por ejemplo, progreso de la historia)
-  currentScene: 'intro'  // Ejemplo: 'intro', 'tutorial', 'pueblo', etc.
+  currentScene: 'intro',  // Ejemplo: 'intro', 'tutorial', 'pueblo', etc.
+  currentTutorialSecene: 0,
 };
 let tamMapa = 5;
 // Inicializar el mapa con celdas vacías de prueba

@@ -4,12 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
   //Menu.showMainMenu();
   //const storedAccount = localStorage.getItem('account_' + "fulano");
   //const account = JSON.parse(storedAccount);
-  Intro.startIntro( );
+  //Intro.startIntro( );
+  Tutorial.createNPCIntro();
 
   /**
    * changeGameState:
    * Cambia el estado global del juego.
-   * @param {string} state - Estado al que se desea cambiar ('menu', 'intro', 'map', 'combat', etc.)
+   * @param {string} state - Estado al que se desea cambiar ('menu', 'tutorial', 'map', 'combat', etc.)
    * @param {Object} [params] - Parámetros adicionales, como restricción de celda.
    */
   function changeGameState(state, params) {
@@ -17,9 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'menu':
         Menu.showMainMenu();
         break;
-      case 'intro':
+      case 'tutorial':
         //Intro.startIntro(params && params.account);
-		Intro.startIntro(params && params.account);
+		Tutorial.startTutorial(window.gameState.currentTutorialSecene);
         break;
       case 'map':
         // Se llama a la función del módulo de mapa
