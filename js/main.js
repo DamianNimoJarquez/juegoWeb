@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
   //const storedAccount = localStorage.getItem('account_' + "fulano");
   //const account = JSON.parse(storedAccount);
   //Intro.startIntro( );
-  Tutorial.createNPCIntro();
+  //Tutorial.createNPCIntro();
+  HUD.inicializaHUD();
 
   /**
    * changeGameState:

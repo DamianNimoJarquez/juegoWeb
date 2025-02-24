@@ -8,9 +8,9 @@ window.dialogues = {
 	},
   maestroTutorial1: {
     story: [
-      "こんにちは、旅人.",
-	  "?",
-	  "!",
+      "<p>こんにちは、旅人.",
+	  "<p>?",
+	  "<p>!",
       "<p>Perdona, pensé que lo entenderías. Mira, este es Kiiro, mi pequeño loro que también habla castellano.</p>",
       "<p>Pronto enfrentarás al enemigo final y yo pereceré. Pero no temas, Kiiro te guiará.</p>",
       "<p>Ahora, debes dirigirte al pueblo para resguardarte. El pueblo se encuentra justo debajo de donde te encuentras.</p>"

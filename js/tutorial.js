@@ -11,26 +11,25 @@ const Tutorial = (function() {
   let npcActual;
   const tutorialScenes = {
     0: (centerPanel) => {
-        currentScreenIndex = 0;
         npcActual = window.gameState.npcs['Narrador'];
         showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
     },
     1: (centerPanel) => {
-        currentScreenIndex = 1;
+        currentScreenIndex = window.gameState.currentTutorialSecene = 1;
         npcActual = window.gameState.npcs['Maestro'];
         centerPanel.style.backgroundImage = "url('assets/images/img1.png')";
         showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
     },
     2: () => {
-		currentScreenIndex = 2;
+		currentScreenIndex = window.gameState.currentTutorialSecene = 2;
 		//cambiar diálogos al Maestro
 		window.gameState.npcs['Maestro'].changeDialgoe(window.dialogues.maestroTutorial2);
-		window.gameState.currentTutorialSecene = 3;
+		//window.gameState.currentTutorialSecene = 3;
 		//cargar el mapa
         window.changeGameState('map', { tutorial: true });
     },
 	3: () => {
-		currentScreenIndex = 3;
+		currentScreenIndex = window.gameState.currentTutorialSecene = 3;
 		npcActual = window.gameState.npcs['Maestro'];
 		//Activar Eventos:
 		//showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
@@ -43,7 +42,7 @@ const Tutorial = (function() {
 	  window.gameState.npcs['Narrador'] = new NPC(0,"Narrador",window.dialogues.narrador);
 	  //creamos el npc del maestro;
 	  window.gameState.npcs['Maestro'] = new NPC(0,"Maestro Hiroshi",window.dialogues.maestroTutorial1);
-	  startTutorial(0);
+	  startTutorial(window.gameState.currentTutorialSecene);
   }
   
   function startTutorial(scene){
@@ -61,7 +60,7 @@ const Tutorial = (function() {
 		  centerPanel.innerHTML = `
 			<div id="intro-master"  style=" background-color: rgb(90.2%, 90.2%, 90.2%, 0.9); padding: 20px;">
 			${dialogo}
-			  <div class="boton-container" style="text-align: center;">
+			  <div class="boton-container" style="text-align: center; padding: 5px;">
 				  <button id="next-screen-btn">Siguiente</button>
 			  </div>
 		    </div>

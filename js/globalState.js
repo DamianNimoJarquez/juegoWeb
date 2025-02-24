@@ -7,9 +7,12 @@ window.gameState = {
 	name: null,
     level: 1,
     xp: 0,
+	xpNextLevl: 100,
     attributes: {
       hp: 100,
+	  hpMax: 100,
       mana: 50,
+	  manaMax: 50,
       attack: 10,
       defense: 5,
       agility: 5,
@@ -18,9 +21,9 @@ window.gameState = {
     coins: 0,
 	inventory: [],       // Array para almacenar objetos (instancias de Item o sus subclases)
     equipment: {
-      weapon: null,
-      armor: null,
-      accessory: null
+      weapon: '',
+      armor: '',
+      accessory: ''
     },
 	activeQuests: [
 		// Array con las misiones activas y su progreso.
@@ -46,20 +49,18 @@ let tamMapa = 5;
 			}
 		gameState.map.push(row);
 		}
-		//definir el pueblo. 0 tam/2
-		gameState.map[0][Math.floor(tamMapa/2)].visited = true;
-		gameState.map[0][Math.floor(tamMapa/2)].type = "town";
-		gameState.map[0][Math.floor(tamMapa/2)].name = "Pueblo Inicial";
-		gameState.map[0][Math.floor(tamMapa/2)].backgroundImage ="assets/images/img2.png";
+		iniciarPueblo();
+		
 	}
 
 function iniciarPueblo(){
 	//definir el pueblo. 0 tam/2
-	gameState.map[0][tamMapa/2].visited = true;
-	gameState.map[0][tamMapa/2].type = "town";
-	gameState.map[0][tamMapa/2].backgroundImage ="assets/images/img2.png";
-	//console.log(gameState.map);
-	//console.log(gameState.map[0][5]);
+	gameState.map[0][Math.floor(tamMapa/2)].visited = true;
+	gameState.map[0][Math.floor(tamMapa/2)].type = "town";
+	gameState.map[0][Math.floor(tamMapa/2)].name = "Pueblo Inicial";
+	gameState.map[0][Math.floor(tamMapa/2)].backgroundImage ="assets/images/img2.png";
+	gameState.map[0][Math.floor(tamMapa/2)].events = window.Events["town"];
+	//Añadir el contenido al pueblo
 }
 
 	// Llamar a la función al inicio

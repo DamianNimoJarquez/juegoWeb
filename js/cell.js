@@ -14,6 +14,7 @@ class Cell {
     this.backgroundImage = backgroundImage;
     this.type = type; // 'normal', 'town', etc.
     this.content = {}; // Aquí se almacenarán datos adicionales (tiendas, puntos de guardado, etc.)
+    this.events = {};
   }
   
   /**

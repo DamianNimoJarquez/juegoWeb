@@ -193,3 +193,102 @@ body, html {
 #xp-fill {
   background-color: orange;
 }
+
+.hud-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(0,0,0,0.8);
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+/* Contenedores individuales dentro del HUD */
+.bar-container, .atributos-container, .equipamiento-container {
+  text-align: center;
+}
+
+/* Botón del inventario */
+.inventario-btn {
+  background-color: #444;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.inventario-btn:hover {
+  background-color: #666;
+}
+
+/* Equipamiento */
+.equipamiento-container p {
+  margin: 5px 0;
+}
+
+.lvlup-btn {
+  display: block;       /* Hace que ocupe toda la línea */
+  margin-top: 10px;      /* Espacio arriba para separarlo del botón de inventario */
+  /* Otros estilos según tu diseño */
+}
+.botones-container {
+  display: flex;
+  flex-direction: column; /* Apila los botones verticalmente */
+  align-items: center;
+  gap: 10px;  /* Espacio entre ellos */
+}
+
+/* Inventario */
+/* Overlay que bloquea toda la pantalla */
+#inventory-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contenedor modal del inventario */
+#inventory-modal {
+  background-color: #fff;
+  width: 80%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Pestañas de inventario */
+#inventory-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.inventory-tab-btn {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Contenedor de ítems del inventario */
+#inventory-items {
+  max-height: 300px;
+  overflow-y: auto;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+/* Estilo para cada ítem del inventario */
+.inventory-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
