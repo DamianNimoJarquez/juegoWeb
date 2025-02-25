@@ -19,7 +19,7 @@ window.gameState = {
       concentration: 5
     },
     coins: 0,
-	inventory: [],       // Array para almacenar objetos (instancias de Item o sus subclases)
+	inventory: {},       // Array para almacenar objetos (instancias de Item o sus subclases)
     equipment: {
       weapon: '',
       armor: '',
@@ -63,6 +63,28 @@ function iniciarPueblo(){
 	//Añadir el contenido al pueblo
 }
 
+function iniciarInventario(){
+	addItemIventario(window.crearItem("consumible","pocion_salud"));
+	addItemIventario(window.crearItem("armas","espada_corta"));
+	addItemIventario(window.crearItem("armaduras","armadura_plata"));
+	addItemIventario(window.crearItem("armaduras","armadura_cuero"));
+	addItemIventario(window.crearItem("consumible","pocion_salud"));
+	console.log(gameState.player.inventory);
+	const categories = ['Consumibles', 'Armas', 'Armaduras', 'Accesorios', 'Ojetos Claves'];
+	//const filtered = Object.values(window.gameState.player.inventory).filter(item => item.item.type === 'Armaduras');
+	const filtered = Object.values(window.gameState.player.inventory).filter(obj => categories.includes(obj.item.type));
+	console.log(filtered);
+
+}
+function addItemIventario(item){
+	let itemid = item.id;
+	if(gameState.player.inventory[itemid])
+		gameState.player.inventory[itemid].quantity++;
+	else
+		gameState.player.inventory[itemid]={item, quantity: 1};
+}
+
 	// Llamar a la función al inicio
 	initializeMap(tamMapa, tamMapa);
+	iniciarInventario();
 	//iniciarPueblo();

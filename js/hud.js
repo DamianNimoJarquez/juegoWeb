@@ -106,109 +106,176 @@ const HUD = (function() {
     }
 
     function abrirInventario() {
-        // Crear el overlay que bloquea toda la interacción en la página
-        const overlay = document.createElement('div');
-        overlay.id = 'inventory-overlay';
-        
-        // Crear el contenedor modal para el inventario
-        const modal = document.createElement('div');
-        modal.id = 'inventory-modal';
-        
-        // Botón para cerrar el inventario
-        const closeBtn = document.createElement('button');
-        closeBtn.id = 'close-inventory-btn';
-        closeBtn.textContent = 'Cerrar Inventario';
-        closeBtn.addEventListener('click', cerrarInventario);
-        
-        // Crear la sección de pestañas para las categorías
-        const tabsContainer = document.createElement('div');
-        tabsContainer.id = 'inventory-tabs';
-        const categories = ['armas', 'armaduras', 'accesorios', 'consumibles', 'claves'];
-        categories.forEach(category => {
-          const tabBtn = document.createElement('button');
-          tabBtn.classList.add('inventory-tab-btn');
-          tabBtn.textContent = category;
-          tabBtn.addEventListener('click', () => mostrarInventarioCategoria(category));
-          tabsContainer.appendChild(tabBtn);
+      // Crear el overlay que bloquea toda la interfaz
+      const overlay = document.createElement('div');
+      overlay.id = 'inventory-overlay';
+    
+      // Crear el contenedor modal para el inventario (se posicionará en el centro)
+      const modal = document.createElement('div');
+      modal.id = 'inventory-modal';
+    
+      // Botón para cerrar el inventario
+      const closeBtn = document.createElement('button');
+      closeBtn.id = 'close-inventory-btn';
+      closeBtn.textContent = 'Cerrar Inventario';
+      closeBtn.addEventListener('click', cerrarInventario);
+    
+      // Crear el contenedor para las pestañas (tab menú)
+      const tabsContainer = document.createElement('div');
+      tabsContainer.id = 'inventory-tabs';
+      const categories = ['Consumibles', 'Armas', 'Armaduras', 'Accesorios', 'Ojetos Claves'];
+      categories.forEach(category => {
+        const tabBtn = document.createElement('button');
+        tabBtn.classList.add('inventory-tab-btn');
+        tabBtn.textContent = category;
+        tabBtn.addEventListener('click', () => {
+          // Marcar la pestaña actual como activa
+          document.querySelectorAll('.inventory-tab-btn').forEach(btn => btn.classList.remove('active'));
+          tabBtn.classList.add('active');
+          mostrarInventarioCategoria(category);
         });
-        
-        // Contenedor donde se mostrarán los ítems de la categoría seleccionada
-        const itemsContainer = document.createElement('div');
-        itemsContainer.id = 'inventory-items';
-        
-        // Agregar elementos al modal
-        modal.appendChild(closeBtn);
-        modal.appendChild(tabsContainer);
-        modal.appendChild(itemsContainer);
-        
-        // Agregar el modal al overlay
-        overlay.appendChild(modal);
-        
-        // Agregar el overlay al body para que se muestre y bloquee la interacción con el resto
-        document.body.appendChild(overlay);
-        
-        // Mostrar una categoría por defecto, por ejemplo "armas"
-        mostrarInventarioCategoria('armas');
+        tabsContainer.appendChild(tabBtn);
+      });
+      // Activar la primera pestaña por defecto
+      tabsContainer.firstChild.classList.add('active');
+    
+      // Contenedor para los ítems del inventario
+      const itemsContainer = document.createElement('div');
+      itemsContainer.id = 'inventory-items';
+    
+      // Agregar elementos al modal
+      modal.appendChild(closeBtn);
+      modal.appendChild(tabsContainer);
+      modal.appendChild(itemsContainer);
+    
+      // Agregar el modal al overlay
+      overlay.appendChild(modal);
+    
+      // Agregar el overlay directamente al body para que cubra toda la pantalla
+      document.body.appendChild(overlay);
+    
+      // Mostrar la categoría por defecto (por ejemplo, 'Consumibles')
+      mostrarInventarioCategoria('Consumibles');
+    }
+    
+    function cerrarInventario() {
+      const overlay = document.getElementById('inventory-overlay');
+      if (overlay) {
+        overlay.remove();
+      }
+    }
+    
+    function mostrarInventarioCategoria(category) {
+      const itemsContainer = document.getElementById('inventory-items');
+      itemsContainer.innerHTML = `<p>Inventario - ${category}</p>`;
+      
+      // Aquí obtendrías los ítems reales del inventario de window.gameState.player.inventory.
+      // Para este ejemplo, usamos ítems de muestra:
+      /*
+      const sampleItems = [
+        { id: 1, name: 'Espada corta', category: 'weapon', quantity: 1, description: 'Una espada corta y afilada.' },
+        { id: 2, name: 'Armadura de Plata', category: 'armor', quantity: 2, description: 'Protección básica de Plata.' },
+        { id: 3, name: 'Armadura de cuero', category: 'armor', quantity: 1, description: 'Protección básica de cuero.' },
+        { id: 4, name: 'Poción de Salud', category: 'consumable', quantity: 5, description: 'Recupera 50 HP.' }
+      ];
+      */
+
+      //const filtered = window.gameState.inventory.filter(item => item.type === category);
+      const filtered = Object.values(window.gameState.player.inventory).filter(obj => category.includes(obj.item.type));
+      
+      if (filtered.length === 0) {
+        itemsContainer.innerHTML += `<p>No hay elementos en esta categoría.</p>`;
+      } else {
+        filtered.forEach(obj => {
+          const itemDiv = document.createElement('div');
+          itemDiv.classList.add('inventory-item');
+          itemDiv.innerHTML = `
+            <div class="item-info">
+              <strong>${obj.item.name}</strong><br>
+              <small>${obj.item.info}</small>
+            </div>
+            <div class="item-qty">x${obj.quantity}</div>
+          `;
+          // Al hacer clic, se pueden mostrar las opciones para ese ítem
+          agregarEventListenerInventario(itemDiv, obj);
+          itemsContainer.appendChild(itemDiv);
+        });
+      }
+    }
+    
+    // Función para mostrar las opciones al lado del cursor
+    function mostrarOpcionesItem(obj, event) {
+      // Evitar que se propaguen otros eventos
+      event.stopPropagation();
+
+      // Si ya existe un popup de opciones, eliminarlo
+      let existingPopup = document.getElementById('item-options-popup');
+      if (existingPopup) {
+        existingPopup.remove();
       }
       
-      function cerrarInventario() {
-        const overlay = document.getElementById('inventory-overlay');
-        if (overlay) {
-          overlay.remove();
-        }
+      // Crear el popup de opciones
+      const popup = document.createElement('div');
+      popup.id = 'item-options-popup';
+      
+      // Ajustar la posición dinámica
+      popup.style.top = event.clientY + 'px';
+      popup.style.left = event.clientX + 'px';
+
+      // Determinar las opciones según el tipo de objeto
+      let opciones = [];
+      switch(obj.item.type){
+        case 'Consumibles':
+          opciones = ['Usar', 'Tirar'];
+          break;
+        case 'Armas':
+        case 'Armaduras':
+        case 'Accesorios':
+          opciones = ['Equipar', 'Tirar'];
+          break;
+        default:
+          opciones = ['Tirar'];
       }
       
-      /**
-       * Muestra los ítems de la categoría especificada.
-       * @param {string} category - La categoría a mostrar (por ejemplo, 'armas').
-       */
-      function mostrarInventarioCategoria(category) {
-        const itemsContainer = document.getElementById('inventory-items');
-        itemsContainer.innerHTML = `<p>Mostrando inventario para: ${category}</p>`;
-        
-        // Aquí puedes obtener los ítems del inventario del jugador:
-        // Por ejemplo:
-        // const inventoryItems = window.gameState.player.inventory.filter(item => item.category === category);
-        // Para este ejemplo, usaremos algunos ítems simulados:
-        const sampleItems = [
-          { id: 1, name: 'Espada corta', category: 'armas' },
-          { id: 2, name: 'Armadura de cuero', category: 'armaduras' },
-          { id: 3, name: 'Poción de Salud', category: 'consumibles' }
-        ];
-        
-        const filtered = sampleItems.filter(item => item.category === category);
-        
-        if (filtered.length === 0) {
-          itemsContainer.innerHTML += `<p>No hay elementos en esta categoría.</p>`;
-        } else {
-          filtered.forEach(item => {
-            const itemDiv = document.createElement('div');
-            itemDiv.classList.add('inventory-item');
-            itemDiv.textContent = item.name;
-            // Al hacer clic en el ítem, mostramos opciones (usar, equipar, tirar) según su tipo
-            itemDiv.addEventListener('click', () => mostrarOpcionesItem(item));
-            itemsContainer.appendChild(itemDiv);
-          });
-        }
-      }
+      // Crear botones para cada opción y añadirlos al popup
+      opciones.forEach(option => {
+        const btn = document.createElement('button');
+        btn.classList.add('botton-item-option');
+        btn.textContent = option;
+        //btn.style.margin = '5px';
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation(); // Evitar que se cierre el popup por otros eventos
+          alert(`Opción seleccionada: ${option} para ${obj.item.name}`);
+          popup.remove();
+        });
+        popup.appendChild(btn);
+      });
       
-      /**
-       * Muestra las opciones para un ítem seleccionado.
-       * @param {Object} item - El objeto ítem.
-       */
-      function mostrarOpcionesItem(item) {
-        // Aquí podrías mostrar otro modal o overlay pequeño con las opciones disponibles.
-        // Para este ejemplo, usaremos una alerta.
-        let opciones = "";
-        if (item.category === 'consumibles') {
-          opciones = "Usar, Tirar";
-        } else if (item.category === 'armas' || item.category === 'armaduras' || item.category === 'accesorios') {
-          opciones = "Equipar, Tirar";
-        } else {
-          opciones = "Tirar";
+      // Agregar el popup al body
+      document.body.appendChild(popup);
+      // Añadir un listener global para cerrar el popup al hacer clic fuera, con la opción {once: true}
+      document.addEventListener('click', function handleClickOutside() {
+        const existingPopup = document.getElementById('item-options-popup');
+        if (existingPopup) {
+          existingPopup.remove();
         }
-        alert(`Opciones para ${item.name}: ${opciones}`);
-      }
+      }, { once: true });
+    }
+
+    // Para cada ítem del inventario, en lugar de usar el event listener anterior que usaba alert(),
+    // se debe modificar para pasar el evento:
+    function agregarEventListenerInventario(itemDiv, item) {
+      itemDiv.addEventListener('click', (event) => {
+        // Antes de mostrar las opciones, se elimina cualquier popup existente
+        let existingPopup = document.getElementById('item-options-popup');
+        if (existingPopup) {
+          existingPopup.remove();
+        }
+        // Mostrar el popup de opciones al lado del cursor
+        mostrarOpcionesItem(item, event);
+      });
+    }
+    
       
 
 return {
