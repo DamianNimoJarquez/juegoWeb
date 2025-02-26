@@ -165,6 +165,7 @@ body, html {
 }
 
 .bar {
+  position: relative; /* Necesario para posicionar el texto de forma absoluta */
   display: inline-block;
   width: 150px;
   height: 20px;
@@ -173,13 +174,21 @@ body, html {
   overflow: hidden;
   margin-left: 5px;
 }
-
+/* Relleno de la barra */
 .bar-fill {
   height: 100%;
-  text-align: center;
-  line-height: 20px;
+  background-color: inherit; /* Se define en los selectores específicos (#hp-fill, etc.) */
+}
+
+/* Texto de la barra, centrado en el contenedor */
+.bar-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #fff;
-  border-radius: 5px;
+  font-weight: bold;
+  pointer-events: none; /* Para que el texto no interfiera con clics sobre la barra */
 }
 
 #hp-fill {
@@ -357,4 +366,74 @@ body, html {
   border: none;
   cursor: pointer;
   gap: 10px;
+}
+
+/* Overlay para el modal de confirmación */
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+/* Modal de confirmación */
+.confirm-modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  text-align: center;
+}
+/*Flechas atributos*/
+/*
+.flechaArriba {
+  background: transparent;
+  display: inline-block;
+  border: 25px solid transparent;
+  border-top-color: #05f00c;
+}
+  */
+.flechaArriba {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Pseudo-elemento para la flecha */
+.flechaArriba::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  /* Ajusta las dimensiones y forma para que la flecha apunte a la izquierda */
+  width: 0;
+  height: 0;
+  /* Creamos la flecha apuntando hacia arriba usando border */
+  border: 10px solid transparent;
+   /* Esto hace que la flecha apunte hacia arriba */
+  border-bottom-color: #05f00c;
+  margin-right: 5px;          /* Espacio entre la flecha y el texto */
+  position: relative;
+  top: -6px; /* Ajusta este valor según necesites */
+}
+
+.flechaAbajo {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.flechaAbajo::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #fa0404;  /* La flecha apuntará hacia abajo si usamos border-top-color */
+  margin-right: 5px;
+  position: relative;
+  top: 5px; /* Ajusta el valor según necesites para posicionarla */
 }

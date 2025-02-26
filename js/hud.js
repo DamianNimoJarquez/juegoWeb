@@ -3,7 +3,6 @@ const HUD = (function() {
 
 
     function actualizarHUD(){
-
     }
 
     function inicializaHUD() {
@@ -21,7 +20,7 @@ const HUD = (function() {
         hpContainer.innerHTML = `<span>HP:</span>
             <div class="bar">
                 <div id="hp-fill" class="bar-fill" style="width: ${(personaje.attributes.hp / personaje.attributes.hpMax) * 100}%">
-                    ${personaje.attributes.hp} / ${personaje.attributes.hpMax}
+                    <div class="bar-text">${personaje.attributes.hp} / ${personaje.attributes.hpMax}</div>
                 </div>
             </div>`;
 
@@ -31,7 +30,7 @@ const HUD = (function() {
         manaContainer.innerHTML = `<span>MP:</span>
             <div class="bar">
                 <div id="mana-fill" class="bar-fill" style="width: ${(personaje.attributes.mana / personaje.attributes.manaMax) * 100}%">
-                    ${personaje.attributes.mana} / ${personaje.attributes.manaMax}
+                    <div class="bar-text">${personaje.attributes.mana} / ${personaje.attributes.manaMax}</div>
                 </div>
             </div>`;
 
@@ -41,7 +40,7 @@ const HUD = (function() {
         xpContainer.innerHTML = `<span>XP:</span>
             <div class="bar">
                 <div id="xp-fill" class="bar-fill" style="width: ${(personaje.xp / personaje.xpMax) * 100}%">
-                    ${personaje.xp} / ${personaje.xpNextLevl}
+                    <div class="bar-text">${personaje.xp} / ${personaje.xpNextLevl}</div>
                 </div>
             </div>`;
 
@@ -76,11 +75,10 @@ const HUD = (function() {
         //  Equipamiento equipado
         const equipamientoContainer = document.createElement("div");
         equipamientoContainer.classList.add("equipamiento-container");
-
         const equipamiento = `
-            <p>Arma: ${personaje.equipment.weapon || "Ninguna"}</p>
-            <p>Armadura: ${personaje.equipment.armor || "Ninguna"}</p>
-            <p>accesorio: ${personaje.equipment.accessory || "Ninguna"}</p>
+            <p>Arma: ${personaje.equipment.Armas?.name || "Ninguna"}</p>
+            <p>Armadura: ${personaje.equipment.Armaduras?.name || "Ninguna"}</p>
+            <p>accesorio: ${personaje.equipment.Accesorios?.name || "Ninguna"}</p>
         `;
 
         equipamientoContainer.innerHTML = equipamiento;
@@ -169,19 +167,8 @@ const HUD = (function() {
       const itemsContainer = document.getElementById('inventory-items');
       itemsContainer.innerHTML = `<p>Inventario - ${category}</p>`;
       
-      // Aquí obtendrías los ítems reales del inventario de window.gameState.player.inventory.
-      // Para este ejemplo, usamos ítems de muestra:
-      /*
-      const sampleItems = [
-        { id: 1, name: 'Espada corta', category: 'weapon', quantity: 1, description: 'Una espada corta y afilada.' },
-        { id: 2, name: 'Armadura de Plata', category: 'armor', quantity: 2, description: 'Protección básica de Plata.' },
-        { id: 3, name: 'Armadura de cuero', category: 'armor', quantity: 1, description: 'Protección básica de cuero.' },
-        { id: 4, name: 'Poción de Salud', category: 'consumable', quantity: 5, description: 'Recupera 50 HP.' }
-      ];
-      */
-
-      //const filtered = window.gameState.inventory.filter(item => item.type === category);
-      const filtered = Object.values(window.gameState.player.inventory).filter(obj => category.includes(obj.item.type));
+      const filtered = Object.values(window.gameState.player.inventory)
+                        .filter(obj => category.includes(obj.item.type));
       
       if (filtered.length === 0) {
         itemsContainer.innerHTML += `<p>No hay elementos en esta categoría.</p>`;
@@ -191,7 +178,7 @@ const HUD = (function() {
           itemDiv.classList.add('inventory-item');
           itemDiv.innerHTML = `
             <div class="item-info">
-              <strong>${obj.item.name}</strong><br>
+              <strong>${obj.item.name}</strong> ${obj.item.equiped? "(Equipado)":''}<br>
               <small>${obj.item.info}</small>
             </div>
             <div class="item-qty">x${obj.quantity}</div>
@@ -231,7 +218,7 @@ const HUD = (function() {
         case 'Armas':
         case 'Armaduras':
         case 'Accesorios':
-          opciones = ['Equipar', 'Tirar'];
+          opciones = [obj.item.equiped? 'Desequipar':'Equipar', 'Tirar'];
           break;
         default:
           opciones = ['Tirar'];
@@ -245,7 +232,22 @@ const HUD = (function() {
         //btn.style.margin = '5px';
         btn.addEventListener('click', function(e) {
           e.stopPropagation(); // Evitar que se cierre el popup por otros eventos
-          alert(`Opción seleccionada: ${option} para ${obj.item.name}`);
+          switch(option){
+            case "Usar":
+              useConsumible(obj);
+              break;
+            case 'Equipar':
+              equiparItem(obj);
+              break;
+            case 'Desequipar':
+              desequiparItem(obj);
+              break;
+            case 'Tirar':
+              tirarObjeto(obj);
+              console.log("se tira");
+              break;
+          }
+          //alert(`Opción seleccionada: ${option} para ${obj.item.name}`);
           popup.remove();
         });
         popup.appendChild(btn);
@@ -275,7 +277,190 @@ const HUD = (function() {
         mostrarOpcionesItem(item, event);
       });
     }
+
+    //Usar consumible
+    function useConsumible(obj){
+
+      switch(obj.item.type){
+      //recuperar vida y maná
+      case 'Consumibles':
+          window.gameState.player.attributes.hp = Math.min(
+                          window.gameState.player.attributes.hp+obj.item.hpRecovered
+                          ,window.gameState.player.attributes.hpMax);
+          window.gameState.player.attributes.mana = Math.min(
+                          window.gameState.player.attributes.mana+obj.item.mpRecovered
+                          ,window.gameState.player.attributes.manaMax);
+          categoria_ = obj.item.type;
+          break;
+      case 'key':
+        break;
+      }
+
+      if(obj.quantity > 1){
+        window.gameState.player.inventory[obj.item.id].quantity--;
+      }
+      else{
+        delete window.gameState.player.inventory[obj.item.id];
+      }
+      //actualizar interface
+      inicializaHUD();
+      //actualizar inventario
+      mostrarInventarioCategoria(categoria_);
+      //console.log(obj);
+    }
+    function tirarObjeto(obj){
+
+      // Preguntar confirmación
+      confirmarObj(obj, 0, function(confirmado) {
+        if (confirmado){
+          categoria_ = obj.item.type;
+          //comprobar si está equipado
+          let texto_ = `
+          ${obj.item.atk !== undefined 
+            ? `<p class="flechaAbajo">
+              -${obj.item.atk} atk</p>` 
+            : ''
+          }
+          ${obj.item.def !== undefined 
+            ? `<p class="flechaAbajo">
+                -${obj.item.def} def</p>` 
+            : ''
+          }
+        `;
+          if(obj.item.equiped){
+            //si lo está preguntar
+            confirmarObj(obj,0,function(confirmacion){
+              if(confirmacion)
+                //desequiparlo
+                window.gameState.player.equipment[obj.item.type] = null;
+                delete window.gameState.player.inventory[obj.item.id];
+                //actualizar interface
+                inicializaHUD();
+                mostrarInventarioCategoria(obj.item.type);
+
+            },0,texto_);
+          }else{
+            delete window.gameState.player.inventory[obj.item.id];
+            mostrarInventarioCategoria(obj.item.type);
+          }
+          
+        }
+
+      });
+      
+    }
+    /**
+     * Función auxiliar para equipar un objeto en una ranura dada..
+     * @param {Object} obj - Objeto con la información del ítem a equipar.
+     */
+    function equiparItem(obj){
+      const player = window.gameState.player;
+      let currentEquipped = player.equipment[obj.item.type];
+      if(currentEquipped !== null){
+        let difAtk = (obj.item.atk ?? 0) - (currentEquipped.atk ?? 0);
+        let difDef = (obj.item.def ?? 0) - (currentEquipped.def ?? 0);
+        let texto_ = `
+          ${obj.item.atk !== undefined 
+            ? `<p class="${difAtk < 0 ? 'flechaAbajo' : 'flechaArriba'}">
+              ${difAtk < 0 ? difAtk : '+' + difAtk} atk</p>` 
+            : ''
+          }
+          ${obj.item.def !== undefined 
+            ? `<p class="${difDef < 0 ? 'flechaAbajo' : 'flechaArriba'}">
+                ${difDef < 0 ? difDef : '+' + difDef} def</p>` 
+            : ''
+          }
+        `;
+        confirmarObj(currentEquipped, 1, function(confirmado) {
+          if(confirmado){
+            //quitamos el item y lo cambiamos
+            player.inventory[obj.item.id].item.equiped = true;
+            player.inventory[currentEquipped.id].item.equiped = false;
+            player.equipment[obj.item.type] = obj.item;
+            mostrarInventarioCategoria(obj.item.type);
+            inicializaHUD();
+          }
+        },obj,texto_);
+      }
+      else{
+        //equipar directamente
+        player.equipment[obj.item.type] = obj.item;
+        player.inventory[obj.item.id].item.equiped = true;
+        mostrarInventarioCategoria(obj.item.type);
+        inicializaHUD();
+      }
+    }
+
+    /**
+     * Función auxiliar para desequipar un objeto en una ranura dada.
+     * @param {Object} obj - Objeto con la información del ítem a equipar.
+     */
+    function desequiparItem(obj){
+      window.gameState.player.equipment[obj.item.type] = null;
+      window.gameState.player.inventory[obj.item.id].item.equiped = false;
+      //window.gameState.player.inventory[obj.item.id].item.equiped=false;
+      mostrarInventarioCategoria(obj.item.type);
+      inicializaHUD();
+    }
+
+    /**
+   * Muestra un modal de confirmación en el centro de la pantalla para confirmar la acción de tirar un objeto.
+   * @param {Object} item - El objeto que se va a tirar (para mostrar su nombre en el mensaje).
+   * @param {number} typeComp - Tipo de comparación, 0 tirar, 1 equipar
+   * @param {Function} callback - Función que se llamará con true si se confirma, false si se cancela.
+   */
+  function confirmarObj(obj, typeComp, callback, obj2, text_) {
+    // Crear el overlay que bloquea toda la pantalla.
+    const overlay = document.createElement('div');
+    overlay.classList.add('confirm-overlay');
+
+    // Crear el modal de confirmación.
+    const modal = document.createElement('div');
+    modal.classList.add('confirm-modal');
+    if(typeComp == 0){
+      //tirar
+      modal.innerHTML = `
+      <p style="margin-bottom: 20px;">¿Estás seguro que deseas tirar
+      <strong>${obj.item.name}</strong> x <strong>${obj.quantity}</strong>?</p>
+      ${text_ !== undefined? `${text_}`:''}
+      <div style="text-align: center;">
+        <button id="confirm-yes-btn" style="margin-right: 10px;">Confirmar</button>
+        <button id="confirm-no-btn">Cancelar</button>
+      </div>
+    `;
+    }
+    else{
+      //equipar
+      modal.innerHTML = `
+      <p style="margin-bottom: 20px;">¿Estás seguro que deseas reemplazar <strong>${obj.name}</strong>
+        por <strong>${obj2.item.name}?</strong></p>
+        ${text_}
+      <div style="text-align: center;">
+        <button id="confirm-yes-btn" style="margin-right: 10px;">Confirmar</button>
+        <button id="confirm-no-btn">Cancelar</button>
+      </div>
+    `;
+    }
     
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // Listener para el botón "Confirmar"
+    document.getElementById('confirm-yes-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      overlay.remove();
+      callback(true);
+    });
+
+    // Listener para el botón "Cancelar"
+    document.getElementById('confirm-no-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      overlay.remove();
+      callback(false);
+    });
+  }
+
       
 
 return {

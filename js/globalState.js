@@ -9,9 +9,9 @@ window.gameState = {
     xp: 0,
 	xpNextLevl: 100,
     attributes: {
-      hp: 100,
+      hp: 75,
 	  hpMax: 100,
-      mana: 50,
+      mana: 5,
 	  manaMax: 50,
       attack: 10,
       defense: 5,
@@ -21,9 +21,9 @@ window.gameState = {
     coins: 0,
 	inventory: {},       // Array para almacenar objetos (instancias de Item o sus subclases)
     equipment: {
-      weapon: '',
-      armor: '',
-      accessory: ''
+      Armas: null,
+      Armaduras: null,
+      Accesorios: null
     },
 	activeQuests: [
 		// Array con las misiones activas y su progreso.
@@ -66,14 +66,15 @@ function iniciarPueblo(){
 function iniciarInventario(){
 	addItemIventario(window.crearItem("consumible","pocion_salud"));
 	addItemIventario(window.crearItem("armas","espada_corta"));
+	addItemIventario(window.crearItem("armas","espada_larga"));
 	addItemIventario(window.crearItem("armaduras","armadura_plata"));
 	addItemIventario(window.crearItem("armaduras","armadura_cuero"));
 	addItemIventario(window.crearItem("consumible","pocion_salud"));
-	console.log(gameState.player.inventory);
-	const categories = ['Consumibles', 'Armas', 'Armaduras', 'Accesorios', 'Ojetos Claves'];
+	//console.log(gameState.player.inventory);
+	//const categories = ['Consumibles', 'Armas', 'Armaduras', 'Accesorios', 'Ojetos Claves'];
 	//const filtered = Object.values(window.gameState.player.inventory).filter(item => item.item.type === 'Armaduras');
-	const filtered = Object.values(window.gameState.player.inventory).filter(obj => categories.includes(obj.item.type));
-	console.log(filtered);
+	//const filtered = Object.values(window.gameState.player.inventory).filter(obj => categories.includes(obj.item.type));
+	//console.log(filtered);
 
 }
 function addItemIventario(item){
