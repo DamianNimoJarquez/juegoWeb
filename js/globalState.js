@@ -38,6 +38,7 @@ window.gameState = {
   // Otros estados globales (por ejemplo, progreso de la historia)
   currentScene: 'intro',  // Ejemplo: 'intro', 'tutorial', 'pueblo', etc.
   currentTutorialSecene: 0,
+  currentTutorialStep: 0,
 };
 let tamMapa = 5;
 // Inicializar el mapa con celdas vacías de prueba
@@ -64,10 +65,10 @@ function iniciarPueblo(){
 }
 
 function iniciarInventario(){
-	addItemIventario(window.crearItem("consumible","pocion_salud"));
-	addItemIventario(window.crearItem("armas","espada_corta"));
-	addItemIventario(window.crearItem("armas","espada_larga"));
-	addItemIventario(window.crearItem("armaduras","armadura_plata"));
+	addItemIventario(window.crearItem("consumible","pocion_salud"),5);
+	addItemIventario(window.crearItem("armas","espada_corta"),5);
+	//addItemIventario(window.crearItem("armas","espada_larga"));
+	//addItemIventario(window.crearItem("armaduras","armadura_plata"));
 	addItemIventario(window.crearItem("armaduras","armadura_cuero"));
 	addItemIventario(window.crearItem("consumible","pocion_salud"));
 	//console.log(gameState.player.inventory);
@@ -77,12 +78,12 @@ function iniciarInventario(){
 	//console.log(filtered);
 
 }
-function addItemIventario(item){
+function addItemIventario(item,quantity){
 	let itemid = item.id;
 	if(gameState.player.inventory[itemid])
 		gameState.player.inventory[itemid].quantity++;
 	else
-		gameState.player.inventory[itemid]={item, quantity: 1};
+		gameState.player.inventory[itemid]={item, quantity: quantity ? quantity : 1};
 }
 
 	// Llamar a la función al inicio

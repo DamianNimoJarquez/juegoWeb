@@ -5,8 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
   //const storedAccount = localStorage.getItem('account_' + "fulano");
   //const account = JSON.parse(storedAccount);
   //Intro.startIntro( );
-  //Tutorial.createNPCIntro();
-  HUD.inicializaHUD();
+  params2 = {
+    cellId: "0-2",
+    tutorial: true
+  }
+true
+  Tutorial.createNPCIntro();
+  window.gameState.npcs['Maestro'].currentDialogueIndex.beforeIndiceDialogos = 1;
+  window.gameState.npcs['Maestro'].currentDialogueIndex.story.i=1;
+  changeGameState('inside', params2 )
+  //HUD.setActivetab('Armas');
+  //HUD.inicializaHUD();
+  /*
+  inventarioBtn = document.getElementsByClassName('inventario-btn')[0];
+  let nuevoInventarioBtn = inventarioBtn.cloneNode(true);
+  inventarioBtn.parentNode.replaceChild(nuevoInventarioBtn, inventarioBtn);
+  nuevoInventarioBtn.addEventListener("click", () => HUD.abrirIventarioTutorial('Armas'));
+  */
 
   /**
    * changeGameState:
@@ -21,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         break;
       case 'tutorial':
         //Intro.startIntro(params && params.account);
-		Tutorial.startTutorial(window.gameState.currentTutorialSecene);
+		    Tutorial.startTutorial(window.gameState.currentTutorialSecene);
         break;
       case 'map':
         // Se llama a la función del módulo de mapa

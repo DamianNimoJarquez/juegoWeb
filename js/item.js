@@ -17,6 +17,7 @@ class Item {
     this.priceSell = priceSell;
     this.info = info;
     this.equiped = false;
+    this.func = null;
   }
 
   getInfo(){
@@ -109,7 +110,7 @@ function crearItem(categoria, id) {
     case "consumible":
       return new Consumable(itemDef.id, itemDef.name, itemDef.priceBuy, itemDef.priceSell, itemDef.hpRecovered, itemDef.mpRecovered, itemDef.info);
     case "key":
-      return new Item(itemDef.id, itemDef.name, "key", itemDef.priceBuy, itemDef.priceSell, itemDef.info);
+      return new Item(itemDef.id, itemDef.name, "Key", itemDef.priceBuy, itemDef.priceSell, itemDef.info);
     default:
       console.error("Categoría desconocida:", categoria);
       return null;
@@ -132,7 +133,7 @@ window.ListItems = {
       name: "Espada Corta",
       priceBuy: 100,
       priceSell: 50,
-      atk: 10,
+      atk: 5,
       info: "Una espada corta y afilada."
     },
     espada_larga: {
@@ -140,7 +141,7 @@ window.ListItems = {
       name: "Espada Larga",
       priceBuy: 200,
       priceSell: 100,
-      atk: 18,
+      atk: 7,
       info: "Una espada larga que inflige más daño."
     }
   },
@@ -190,7 +191,8 @@ window.ListItems = {
       name: "Piedra Misteriosa",
       priceBuy: 0,
       priceSell: 0,
-      info: "Una Piedra misteriosa que parece albergar un poder en su interior."
+      info: "Una Piedra misteriosa que parece albergar un poder en su interior.",
+      func: new Function("id_skill", "window.crearSkill(d_skill);")
     }
   }
 };

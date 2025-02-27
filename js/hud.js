@@ -1,8 +1,52 @@
 //js/hud.js
 const HUD = (function() {
+let activetab_;
+let pasoTutoria = 10;
 
-
-    function actualizarHUD(){
+    function abrirIventarioTutorial(activetab_){
+      // Crear el overlay que bloquea toda la interfaz
+      const overlay = document.createElement('div');
+      overlay.id = 'inventory-overlay';
+      // Crear el contenedor modal para el inventario (se posicionará en el centro)
+      const modal = document.createElement('div');
+      modal.id = 'inventory-modal';
+      // Crear el contenedor para las pestañas (tab menú)
+      const tabsContainer = document.createElement('div');
+      tabsContainer.id = 'inventory-tabs';
+      const categories = ['Consumibles', 'Armas', 'Armaduras', 'Accesorios', 'Ojetos Claves'];
+      categories.forEach(category => {
+        const tabBtn = document.createElement('button');
+        tabBtn.classList.add('inventory-tab-btn');
+        tabBtn.textContent = category;
+        if(category === activetab_){
+          tabBtn.classList.add('active');
+          tabBtn.addEventListener('click', () => {
+          // Marcar la pestaña actual como activa
+          document.querySelectorAll('.inventory-tab-btn').forEach(btn => btn.classList.remove('active'));
+          tabBtn.classList.add('active');
+          mostrarInventarioCategoria(category);
+          });
+        }
+        tabsContainer.appendChild(tabBtn);
+      });
+      // Contenedor para los ítems del inventario
+      const itemsContainerT = document.createElement('div');
+      itemsContainerT.id = 'inventory-items';
+      // Agregar elementos al modal
+      modal.appendChild(tabsContainer);
+      modal.appendChild(itemsContainerT);
+      // Agregar el modal al overlay
+      overlay.appendChild(modal);
+      // Agregar el overlay directamente al body para que cubra toda la pantalla
+      document.body.appendChild(overlay);
+      //Damos las opciones a los objetos del inventario
+      const itemsContainer = document.getElementById('inventory-items');
+      itemsContainer.innerHTML = `<p>Inventario - ${category}</p>`;
+      const filtered = Object.values(window.gameState.player.inventory)
+                        .filter(obj => category.includes(obj.item.type));
+      
+      // Mostrar la categoría por defecto (por ejemplo, 'Consumibles')
+      mostrarInventarioCategoria(activetab_);
     }
 
     function inicializaHUD() {
@@ -61,11 +105,11 @@ const HUD = (function() {
         const inventarioIcon = document.createElement("button");
         inventarioIcon.textContent = "📦 Inventario";
         inventarioIcon.classList.add("inventario-btn");
-        inventarioIcon.addEventListener("click", () => abrirInventario());
+        inventarioIcon.addEventListener("click", () => abrirInventario(activetab_));
         //icono para subir de nivel:
         const levelUpIcon = document.createElement("button");
         levelUpIcon.textContent = "📦 Subir de Nivel";
-        levelUpIcon.classList.add("lvlup-btn");
+        levelUpIcon.classList.add("ocult-btn");
         levelUpIcon.addEventListener("click", () => levelUP());
         levelUpIcon.disabled = true;
         levelUpIcon.style.display = "none";  // Oculto inicialmente
@@ -117,6 +161,10 @@ const HUD = (function() {
       closeBtn.id = 'close-inventory-btn';
       closeBtn.textContent = 'Cerrar Inventario';
       closeBtn.addEventListener('click', cerrarInventario);
+      if(window.gameState.currentTutorialSecene <= pasoTutoria){
+        closeBtn.style.display = "none";
+        closeBtn.disabled = true;
+      }
     
       // Crear el contenedor para las pestañas (tab menú)
       const tabsContainer = document.createElement('div');
@@ -126,16 +174,22 @@ const HUD = (function() {
         const tabBtn = document.createElement('button');
         tabBtn.classList.add('inventory-tab-btn');
         tabBtn.textContent = category;
-        tabBtn.addEventListener('click', () => {
+        if(window.gameState.currentTutorialSecene <= pasoTutoria && category == activetab_){
+          //estamos en el tutorial
+          tabBtn.classList.add('active');
+          tabBtn.addEventListener('click', () => {
           // Marcar la pestaña actual como activa
           document.querySelectorAll('.inventory-tab-btn').forEach(btn => btn.classList.remove('active'));
           tabBtn.classList.add('active');
           mostrarInventarioCategoria(category);
-        });
+          });
+        }
+          
         tabsContainer.appendChild(tabBtn);
       });
-      // Activar la primera pestaña por defecto
-      tabsContainer.firstChild.classList.add('active');
+      // Activar la primera pestaña por defecto si no está en el tutorial
+      if(window.gameState.currentTutorialSecene > pasoTutoria)
+        tabsContainer.firstChild.classList.add('active');
     
       // Contenedor para los ítems del inventario
       const itemsContainer = document.createElement('div');
@@ -151,9 +205,16 @@ const HUD = (function() {
     
       // Agregar el overlay directamente al body para que cubra toda la pantalla
       document.body.appendChild(overlay);
-    
-      // Mostrar la categoría por defecto (por ejemplo, 'Consumibles')
-      mostrarInventarioCategoria('Consumibles');
+
+      if(window.gameState.currentTutorialSecene <= pasoTutoria){
+        mostrarInventarioCategoria(activetab_);
+        //vuelve al tutorial
+        window.gameState.currentTutorialSecene++;
+        window.changeGameState('tutorial');
+      }
+      else
+        // Mostrar la categoría por defecto (por ejemplo, 'Consumibles')
+        mostrarInventarioCategoria('Consumibles');
     }
     
     function cerrarInventario() {
@@ -189,6 +250,7 @@ const HUD = (function() {
         });
       }
     }
+
     
     // Función para mostrar las opciones al lado del cursor
     function mostrarOpcionesItem(obj, event) {
@@ -211,19 +273,22 @@ const HUD = (function() {
 
       // Determinar las opciones según el tipo de objeto
       let opciones = [];
+      if(window.gameState.currentTutorialSecene <= pasoTutoria){
+        
+      }
       switch(obj.item.type){
         case 'Consumibles':
-          opciones = ['Usar', 'Tirar'];
+          opciones = window.gameState.currentTutorialSecene <= pasoTutoria ? ['Usar']: ['Usar', 'Tirar'];
           break;
         case 'Armas':
         case 'Armaduras':
         case 'Accesorios':
-          opciones = [obj.item.equiped? 'Desequipar':'Equipar', 'Tirar'];
+          opciones = opciones = window.gameState.currentTutorialSecene <= pasoTutoria ?
+            [obj.item.equiped? '':'Equipar'] : [obj.item.equiped? 'Desequipar':'Equipar', 'Tirar'];
           break;
         default:
-          opciones = ['Tirar'];
+          //opciones = ['Tirar'];
       }
-      
       // Crear botones para cada opción y añadirlos al popup
       opciones.forEach(option => {
         const btn = document.createElement('button');
@@ -244,7 +309,6 @@ const HUD = (function() {
               break;
             case 'Tirar':
               tirarObjeto(obj);
-              console.log("se tira");
               break;
           }
           //alert(`Opción seleccionada: ${option} para ${obj.item.name}`);
@@ -252,9 +316,9 @@ const HUD = (function() {
         });
         popup.appendChild(btn);
       });
-      
       // Agregar el popup al body
-      document.body.appendChild(popup);
+      if(window.gameState.currentTutorialSecene > pasoTutoria || !obj.item.equiped)
+        document.body.appendChild(popup);
       // Añadir un listener global para cerrar el popup al hacer clic fuera, con la opción {once: true}
       document.addEventListener('click', function handleClickOutside() {
         const existingPopup = document.getElementById('item-options-popup');
@@ -280,7 +344,6 @@ const HUD = (function() {
 
     //Usar consumible
     function useConsumible(obj){
-
       switch(obj.item.type){
       //recuperar vida y maná
       case 'Consumibles':
@@ -309,7 +372,6 @@ const HUD = (function() {
       //console.log(obj);
     }
     function tirarObjeto(obj){
-
       // Preguntar confirmación
       confirmarObj(obj, 0, function(confirmado) {
         if (confirmado){
@@ -343,11 +405,8 @@ const HUD = (function() {
             delete window.gameState.player.inventory[obj.item.id];
             mostrarInventarioCategoria(obj.item.type);
           }
-          
         }
-
       });
-      
     }
     /**
      * Función auxiliar para equipar un objeto en una ranura dada..
@@ -388,6 +447,12 @@ const HUD = (function() {
         player.inventory[obj.item.id].item.equiped = true;
         mostrarInventarioCategoria(obj.item.type);
         inicializaHUD();
+      }
+      //una vez equipado, si estamos en el tutorial, cambiamos la escena
+      if(window.gameState.currentTutorialSecene <= pasoTutoria){
+        window.gameState.currentTutorialSecene++;
+        window.changeGameState("tutorial");
+        cerrarInventario();
       }
     }
 
@@ -461,10 +526,13 @@ const HUD = (function() {
     });
   }
 
-      
+  function setActivetab(value) {
+    activetab_ = value;  // setter para cambiar el valor
+}
 
 return {
     inicializaHUD : inicializaHUD,
-    actualizarHUD : actualizarHUD
+    abrirIventarioTutorial : abrirIventarioTutorial,
+    setActivetab: setActivetab
     }
 })();

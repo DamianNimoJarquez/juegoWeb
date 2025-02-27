@@ -14,7 +14,8 @@ class NPC {
     this.dialogues = dialogues; // Ej: [ "Hola, bienvenido", "¿Cómo estás?" ]
     // Índices para cada tipo de diálogo
     this.currentDialogueIndex = {
-      story: 0,
+		beforeIndiceDialogos : 0,
+      story: {i:0,j:0},
       generic: 0,
       quest: {}
     };
@@ -52,13 +53,34 @@ class NPC {
 			break;
 		case 'story':
 			dialoguesArray = this.dialogues.story;
-			index = this.currentDialogueIndex.story;
-			if (index >= dialoguesArray.length) {
-			// Ya no quedan diálogos de story
+			index = this.currentDialogueIndex.story.i;
+			//console.log("index = ", index);
+			//console.log("current = ", this.currentDialogueIndex.beforeIndiceDialogos);
+			//console.log("j = ", this.currentDialogueIndex.story.j);
+			//console.log("array = ", dialoguesArray);
+			if (index > this.currentDialogueIndex.beforeIndiceDialogos) {
+				// Ya no quedan diálogos de story en este índice
+				//console.log("Se ha terminado los dialogos en index. Cambiando current");
+				this.currentDialogueIndex.story.j = 0;
+				this.currentDialogueIndex.beforeIndiceDialogos = index;
+			//console.log("Salgo con:");
+				//console.log("index = ", index);
+				//console.log("curren = ", this.currentDialogueIndex.beforeIndiceDialogos);
+				//console.log("j = ", this.currentDialogueIndex.story.j);
+
 				return null; // o podrías devolver un mensaje especial
 			}
-			dialogue = dialoguesArray[index];
-			this.currentDialogueIndex.story++;
+			dialogue = dialoguesArray[index][this.currentDialogueIndex.story.j];
+			this.currentDialogueIndex.story.j++;
+			if(this.currentDialogueIndex.story.j >= dialoguesArray[index].length ){
+				this.currentDialogueIndex.story.i++;
+				this.currentDialogueIndex.story.j = 0;
+			}
+				//console.log("Salgo con:");
+				//console.log("index = ", index);
+				//console.log("curren = ", this.currentDialogueIndex.beforeIndiceDialogos);
+				//console.log("j = ", this.currentDialogueIndex.story.j);
+				//this.currentDialogueIndex.beforeIndiceDialogos = this.currentDialogueIndex.story.i;
 			break;
 		case 'generic':
 			dialoguesArray = this.dialogues.generic;
@@ -70,6 +92,10 @@ class NPC {
 		}
 		return ("<strong>" + this.name + ":</strong> " + dialogue);
   }
+
+
+
+
 
   /**
    * getNextDialogue:

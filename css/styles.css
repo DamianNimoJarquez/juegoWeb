@@ -238,7 +238,7 @@ body, html {
   margin: 5px 0;
 }
 
-.lvlup-btn {
+.ocult-btn {
   display: block;       /* Hace que ocupe toda la línea */
   margin-top: 10px;      /* Espacio arriba para separarlo del botón de inventario */
   /* Otros estilos según tu diseño */

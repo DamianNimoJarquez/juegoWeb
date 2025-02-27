@@ -2,19 +2,42 @@
 window.dialogues = {
 	narrador: {
 		story: [
-			"<p>De repente, todo se vuelve oscuro...</p>",
-            "<p>Cuando recuperas la visión, te encuentras en un mundo completamente distinto: un Japón feudal con magia en cada rincón.</p>"
+			[
+				`<p>De repente, todo se vuelve oscuro...</p>`,
+            	`<p>Cuando recuperas la visión, te encuentras en un mundo completamente distinto:
+					un Japón feudal con magia en cada rincón.</p>`
+			],
 		],
 	},
   maestroTutorial1: {
     story: [
-      "<p>こんにちは、旅人.",
-	  "<p>?",
-	  "<p>!",
-      "<p>Perdona, pensé que lo entenderías. Mira, este es Kiiro, mi pequeño loro que también habla castellano.</p>",
-      "<p>Pronto enfrentarás al enemigo final y yo pereceré. Pero no temas, Kiiro te guiará.</p>",
-      "<p>Ahora, debes dirigirte al pueblo para resguardarte. El pueblo se encuentra justo debajo de donde te encuentras.</p>"
-    ],
+		["<p>こんにちは、旅人.",
+		"<p>?",
+		"<p>!",
+		"<p>Perdona, pensé que lo entenderías. Mira, este es Kiiro, mi pequeño loro que también habla castellano.</p>",
+		"<p>Pronto enfrentarás al enemigo final y yo pereceré. Pero no temas, Kiiro te guiará.</p>",
+		"<p>Ahora, debes dirigirte al pueblo para resguardarte. El pueblo se encuentra justo debajo de donde te encuentras.</p>"
+    	],
+		[
+			"<p>Bienvenido al pueblo tal</p>",
+			"<p>Antes de nada permíteme una cosa...</p>"
+		],
+		[
+			`<p>Ahora puedes consultar tus atributos abajo de la pantalla</p>`,
+			`<p>Atributo 1: Tal`,
+		],
+		[
+			`<p>Pulsa sobre el botón Inventario`
+		],
+		[
+			`<p>Pulsa sobre la <strong>Espada Corta</strong> y <strong>Equípala</strong>`
+		],
+		[
+			`<p>Beneficios de los atributos`,
+			`<p>Sobre los objetos en general`,
+			`<p>Sobre los objetos claves`
+		]
+	],
     generic: [
       "¿Necesitas algo?",
       "Puedo ayudarte con información."
@@ -31,18 +54,6 @@ window.dialogues = {
 			"Gracias por acabar con los enemigos."
 		],
 	}
-  },
-  maestroTutorial2: {
-	  story: [
-			"<p>Bienvenido al pueblo tal</p>",
-			"<p>Antes de nada permíteme una cosa...</p>"
-		],
-  },
-  maestroTutorial3: {
-	  story: [
-			"<p>Esto es una piedra que te otorgará una habilidad que te será útil</p>",
-			"<p>Antes de nada permíteme una cosa...</p>"
-		],
   },
   // Más NPCs...
 };

@@ -31,11 +31,16 @@ function loadCellImage(casilla_){
 function loadCellEvents(casilla_, params){
 	//Comprobar si aún estamos en el tutorial
 	if (params && params.tutorial){
+		window.gameState.currentTutorialSecene = 3
+		console.log("Cambiando");
+		Tutorial.startTutorial(3);
+		/*
 		loardTutorialEscen(casilla_);
 		let tutorialEvent = casilla_.events["tutorial"];
 		console.log(tutorialEvent);
 		const keys = Object.keys(tutorialEvent);
 		console.log("Tamaño del objeto: ", keys.length);
+		*/
 	}
 	else{
 		
