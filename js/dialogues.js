@@ -35,7 +35,11 @@ window.dialogues = {
 		[
 			`<p>Beneficios de los atributos`,
 			`<p>Sobre los objetos en general`,
-			`<p>Sobre los objetos claves`
+			`<p>Sobre los objetos claves`,
+			`<p>Abre el inventario de nuevo`
+		],
+		[
+			`<p>Pulsa sobre <strong>Piedra Misteriosa</strong> y pulsa <strong>Usar</strong>`
 		]
 	],
     generic: [

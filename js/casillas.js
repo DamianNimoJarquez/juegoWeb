@@ -23,8 +23,9 @@ function loadCellImage(casilla_){
 	const centerPanel = document.getElementById('center-panel');
 	// Establecer el fondo del panel central 
 	centerPanel.style.backgroundImage = "url('" + casilla_.backgroundImage +"')";
-	centerPanel.style.backgroundSize = "cover";
-	centerPanel.style.backgroundPosition = "center";
+	//centerPanel.style.backgroundSize = "contain";
+	//centerPanel.style.backgroundPosition = "center";
+	//centerPanel.style.backgroundRepeat = "no-repeat"; /* Evita repeticiones si la imagen es más pequeña que el contenedor */
 	centerPanel.innerHTML = ``;
 }
 

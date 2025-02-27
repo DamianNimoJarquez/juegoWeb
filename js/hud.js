@@ -1,7 +1,7 @@
 //js/hud.js
 const HUD = (function() {
 let activetab_;
-let pasoTutoria = 10;
+let pasoTutoria = 20;
 
     function abrirIventarioTutorial(activetab_){
       // Crear el overlay que bloquea toda la interfaz
@@ -287,37 +287,39 @@ let pasoTutoria = 10;
             [obj.item.equiped? '':'Equipar'] : [obj.item.equiped? 'Desequipar':'Equipar', 'Tirar'];
           break;
         default:
-          //opciones = ['Tirar'];
+          opciones = obj.item.usable ? ['Usar']: null;
       }
       // Crear botones para cada opción y añadirlos al popup
-      opciones.forEach(option => {
-        const btn = document.createElement('button');
-        btn.classList.add('botton-item-option');
-        btn.textContent = option;
-        //btn.style.margin = '5px';
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation(); // Evitar que se cierre el popup por otros eventos
-          switch(option){
-            case "Usar":
-              useConsumible(obj);
-              break;
-            case 'Equipar':
-              equiparItem(obj);
-              break;
-            case 'Desequipar':
-              desequiparItem(obj);
-              break;
-            case 'Tirar':
-              tirarObjeto(obj);
-              break;
-          }
-          //alert(`Opción seleccionada: ${option} para ${obj.item.name}`);
-          popup.remove();
+      if(opciones !== null){
+        opciones.forEach(option => {
+          const btn = document.createElement('button');
+          btn.classList.add('botton-item-option');
+          btn.textContent = option;
+          //btn.style.margin = '5px';
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation(); // Evitar que se cierre el popup por otros eventos
+            switch(option){
+              case "Usar":
+                useConsumible(obj);
+                break;
+              case 'Equipar':
+                equiparItem(obj);
+                break;
+              case 'Desequipar':
+                desequiparItem(obj);
+                break;
+              case 'Tirar':
+                tirarObjeto(obj);
+                break;
+            }
+            //alert(`Opción seleccionada: ${option} para ${obj.item.name}`);
+            popup.remove();
+          });
+          popup.appendChild(btn);
         });
-        popup.appendChild(btn);
-      });
+      }
       // Agregar el popup al body
-      if(window.gameState.currentTutorialSecene > pasoTutoria || !obj.item.equiped)
+      if((window.gameState.currentTutorialSecene > pasoTutoria || !obj.item.equiped) && opciones !==null)
         document.body.appendChild(popup);
       // Añadir un listener global para cerrar el popup al hacer clic fuera, con la opción {once: true}
       document.addEventListener('click', function handleClickOutside() {
@@ -353,9 +355,17 @@ let pasoTutoria = 10;
           window.gameState.player.attributes.mana = Math.min(
                           window.gameState.player.attributes.mana+obj.item.mpRecovered
                           ,window.gameState.player.attributes.manaMax);
-          categoria_ = obj.item.type;
           break;
-      case 'key':
+      case 'Ojetos Claves':
+        console.log(obj.item.action);
+        switch(obj.item.action){
+          case 'Habilidad':
+            //crear habilidad y añadirla al usuario
+            break;
+          default:
+            console.error("Tipo de accion no valido");
+        }
+        console.log("objeto clave consumido");
         break;
       }
 
@@ -365,11 +375,18 @@ let pasoTutoria = 10;
       else{
         delete window.gameState.player.inventory[obj.item.id];
       }
+      categoria_ = obj.item.type;
       //actualizar interface
       inicializaHUD();
       //actualizar inventario
       mostrarInventarioCategoria(categoria_);
-      //console.log(obj);
+      //una vez usado, si estamos en el tutorial, cambiamos la escena
+      if(window.gameState.currentTutorialSecene <= pasoTutoria){
+        window.gameState.currentTutorialSecene++;
+        console.log("en usar ", window.gameState.currentTutorialSecene);
+        window.changeGameState("tutorial");
+        cerrarInventario();
+      }
     }
     function tirarObjeto(obj){
       // Preguntar confirmación
@@ -451,6 +468,7 @@ let pasoTutoria = 10;
       //una vez equipado, si estamos en el tutorial, cambiamos la escena
       if(window.gameState.currentTutorialSecene <= pasoTutoria){
         window.gameState.currentTutorialSecene++;
+        console.log("en inventario ", window.gameState.currentTutorialSecene);
         window.changeGameState("tutorial");
         cerrarInventario();
       }

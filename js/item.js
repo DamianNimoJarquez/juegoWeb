@@ -9,7 +9,7 @@
  * @param {number} priceSell - Precio de venta.
  */
 class Item {
-  constructor(id, name, type, priceBuy, priceSell, info) {
+  constructor(id, name, type, priceBuy, priceSell, info, usable = false, action = null, func = null) {
     this.id = id;
     this.name = name;
     this.type = type;
@@ -17,7 +17,9 @@ class Item {
     this.priceSell = priceSell;
     this.info = info;
     this.equiped = false;
-    this.func = null;
+    this.func = func;
+    this.usable = usable;
+    this.action = action;
   }
 
   getInfo(){
@@ -82,7 +84,7 @@ class Accessory extends Item {
  */
 class Consumable extends Item {
   constructor(id, name, priceBuy, priceSell, hpRecovered, mpRecovered, info) {
-    super(id, name, 'Consumibles', priceBuy, priceSell, info);
+    super(id, name, 'Consumibles', priceBuy, priceSell, info, true);
     this.hpRecovered = hpRecovered;
     this.mpRecovered = mpRecovered;
   }
@@ -110,7 +112,7 @@ function crearItem(categoria, id) {
     case "consumible":
       return new Consumable(itemDef.id, itemDef.name, itemDef.priceBuy, itemDef.priceSell, itemDef.hpRecovered, itemDef.mpRecovered, itemDef.info);
     case "key":
-      return new Item(itemDef.id, itemDef.name, "Key", itemDef.priceBuy, itemDef.priceSell, itemDef.info);
+      return new Item(itemDef.id, itemDef.name, "Ojetos Claves", itemDef.priceBuy, itemDef.priceSell, itemDef.info,itemDef.usable,itemDef.action,itemDef.func);
     default:
       console.error("Categoría desconocida:", categoria);
       return null;
@@ -192,7 +194,9 @@ window.ListItems = {
       priceBuy: 0,
       priceSell: 0,
       info: "Una Piedra misteriosa que parece albergar un poder en su interior.",
-      func: new Function("id_skill", "window.crearSkill(d_skill);")
+      func: function(){ return window.crearSkill("furigana");},
+      usable: true,
+      action: "Habilidad"
     }
   }
 };

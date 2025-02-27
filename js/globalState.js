@@ -71,6 +71,7 @@ function iniciarInventario(){
 	//addItemIventario(window.crearItem("armaduras","armadura_plata"));
 	addItemIventario(window.crearItem("armaduras","armadura_cuero"));
 	addItemIventario(window.crearItem("consumible","pocion_salud"));
+	addItemIventario(window.crearItem("key","piedra_misteriosa"));
 	//console.log(gameState.player.inventory);
 	//const categories = ['Consumibles', 'Armas', 'Armaduras', 'Accesorios', 'Ojetos Claves'];
 	//const filtered = Object.values(window.gameState.player.inventory).filter(item => item.item.type === 'Armaduras');

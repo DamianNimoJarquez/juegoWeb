@@ -56,8 +56,6 @@ const Tutorial = (function() {
 		//habilitar el botón
 		inventarioBtn = document.getElementsByClassName('inventario-btn')[0]
 		inventarioBtn.disabled  = false;
-		//mostrar diálogos
-		//showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 		
 	},
 	7: (centerPanel) =>{
@@ -66,7 +64,6 @@ const Tutorial = (function() {
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex,true);
 	},
 	8: (centerPanel) =>{
-		console.log("Estamos en 8");
 		currentScreenIndex = window.gameState.currentTutorialSecene;
 		//deshabilitar de nuevo inventario.
 		inventarioBtn = document.getElementsByClassName('inventario-btn')[0]
@@ -75,9 +72,20 @@ const Tutorial = (function() {
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
 	9: (centerPanel) =>{
+		currentScreenIndex = ++window.gameState.currentTutorialSecene;
 		console.log("Estamos en 9");
+		//Limpiamos el pane
+		centerPanel.innerHTML = ``;
+		HUD.inicializaHUD();
+		HUD.setActivetab('Ojetos Claves');
 		//objetos claves
 	},
+	10: (centerPanel) =>{
+		currentScreenIndex = window.gameState.currentTutorialSecene;
+		//mostrar texto usar objeto
+		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex,true);
+	},
+	
 	
 };
 

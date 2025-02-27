@@ -29,7 +29,7 @@ window.skillList ={
         id: "furigana",
         name: "Furigana",
         description: "Permite ver furigana en los kanjis",
-        type: "Habilidad"
+        type: "Pasiva"
     },
 
 };
