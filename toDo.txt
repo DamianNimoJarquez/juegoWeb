@@ -1,8 +1,4 @@
 - Mostrar los atributos con los aumento del equipo
-- Mostrar diálogo de las habilidades
-- habilitar las habilidades para equiparlas y desequiparlas
-- Hacer que se equipe furigana.
-- Bloquear el panel de las habilidades
 - Tutorial de misiones
     - Añadir misiones al panel
     - Mostrar diálogo explicándo como funciona el panel.

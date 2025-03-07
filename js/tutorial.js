@@ -86,10 +86,76 @@ const Tutorial = (function() {
 		deshabilitarInventario(true);
 		//Crear el panel de habilidades
 		document.getElementById("left-panel").insertAdjacentHTML("afterbegin", "<h3>Habilidades</h3>");
-	}
+		//deshabilitar las skills
+		const listaSkillsPanel = document.querySelector('.abilities-list');
+		listaSkillsPanel.classList.add('disabled');
+		//listaSkillsPanel.classList.remove('disabled'); habilitarlo
+		//diálogo habilidades:
+		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
+	},
+	12: (centerPanel) =>{ // equipar hablidad
+		const listaSkillsPanel = document.querySelector('.abilities-list');
+		currentScreenIndex = ++window.gameState.currentTutorialSecene;
+		//Limpiamos el pane
+		centerPanel.innerHTML = ``;
+		//cambiar el listener de la skill para cambiar de escena
+		const skillElements = listaSkillsPanel.querySelectorAll('.ability');
+		skillElements.forEach(skill => {
+			// Remover el listener anterior si existía
+			skill.removeEventListener('click', cambiarEscenaListener);
+			// Añadir el listener directamente, sin envolverlo en otra función
+			skill.addEventListener('click', cambiarEscenaListener);
+		});
+		//habilitar el panel de skills
+		listaSkillsPanel.classList.remove('disabled');
+	},
+	13: (centerPanel) =>{
+		currentScreenIndex = window.gameState.currentTutorialSecene;
+		const listaSkillsPanel = document.querySelector('.abilities-list');
+		//deshabilitar de nuevo el panel de skills
+		listaSkillsPanel.classList.add('disabled');
+		//cambiar el listener de nuevo:
+		// Eliminar el listener de la acción que cambia la escena
+		listaSkillsPanel.querySelectorAll('.ability').forEach(skill => {
+			// Eliminar el listener anterior
+			skill.removeEventListener('click', cambiarEscenaListener);
+		});
+		listaSkillsPanel.querySelectorAll('.ability').forEach(skill => {
+			// Añadir el listener que maneja el cambio de habilidad (equipada / no equipada)
+			skill.dataset.equipped = 'true';
+
+			skill.addEventListener('click', toggleEquiparHabilidad);
+		});
+		//mostrar diálogos misiones
+		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
+	},
+	14: (centerPanel) =>{
+		currentScreenIndex = ++window.gameState.currentTutorialSecene;
+		//Limpiamos el pane
+		centerPanel.innerHTML = ``;
+		console.log('en 14');
+	},
 	
 	
 };
+// Función que alterna entre equipada / no equipada
+function toggleEquiparHabilidad(event) {
+    const skill = event.target;
+    const isEquipped = skill.dataset.equipped === 'true'; // Comprueba si está equipada
+    skill.dataset.equipped = isEquipped ? 'false' : 'true'; // Alterna el estado de equipado
+    // Actualiza las clases según el nuevo estado
+    skill.classList.toggle('equipped', !isEquipped); // 'equipped' es la clase para habilidades equipadas
+    skill.classList.toggle('locked', isEquipped); // 'locked' es la clase para habilidades no equipadas
+}
+// Este es el listener que solo cambiará de escena una vez
+function cambiarEscenaListener(event) {
+    const skill = event.currentTarget; // o event.target, según convenga
+    // Alternar estado, cambiar escena, etc.
+    window.gameState.currentTutorialSecene++;
+    tutorialScenes[window.gameState.currentTutorialSecene](centerPanel);
+    // Y eliminar el listener para que se ejecute solo una vez, si es lo deseado
+    skill.removeEventListener('click', cambiarEscenaListener);
+}
 
 function deshabilitarInventario(value){
 	//deshabilitar de nuevo inventario.

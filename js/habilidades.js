@@ -61,9 +61,21 @@ function addSkillTree(skill){
       <div class="ability-short-desc">${skill.shortDesc}</div>
       <div class="ability-tooltip">${tooltipContent}</div>
     `;
+    // Añadir un listener de clic a cada nueva habilidad
+    newLi.addEventListener('click', () => {
+        // Alterna el estado de si la habilidad está equipada
+        const isEquipped = newLi.dataset.equipped === 'true'; // Comprueba si está equipada
+        newLi.dataset.equipped = isEquipped ? 'false' : 'true'; // Alterna el estado de equipado
+
+        // Actualiza la clase según el nuevo estado (equipada o no)
+        newLi.classList.toggle('equipped', !isEquipped); // 'equipped' es la clase para habilidades equipadas
+        newLi.classList.toggle('locked', isEquipped); // 'locked' es la clase para habilidades no equipadas
+    });
+
     // Aquí puedes agregar un event listener para seleccionar la habilidad, etc.
     listaSkillsPanel.appendChild(newLi);
 }
+
 function desblquear(skill){
     player = window.gameState.player;
     // Recorremos cada requisito (clave y valor) del objeto de requisitos

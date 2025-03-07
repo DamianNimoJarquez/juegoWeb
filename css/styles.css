@@ -210,6 +210,23 @@ body, html {
 .ability:hover .ability-tooltip {
   display: block;
 }
+/* Habilidades equipadas */
+.ability.equipped {
+  background-color: #DFF0D8;  /* Fondo verde claro para habilidades equipadas */
+  border-color: #4CAF50;  /* Borde verde si está equipada */
+  opacity: 1; /* Asegurarse de que esté completamente visible */
+}
+
+/* Habilidades no equipadas */
+.ability:not(.equipped) {
+  background-color: #f9f9f9;  /* Fondo por defecto */
+  border-color: #ccc;  /* Borde gris por defecto */
+  opacity: 0.7; /* Opcional: hacer que se vea un poco atenuada si no está equipada */
+}
+/* Deshabilita la interacción con la lista de habilidades */
+.abilities-list.disabled {
+  pointer-events: none;
+}
 
 /* Lista de misiones */
 #missions-list {
