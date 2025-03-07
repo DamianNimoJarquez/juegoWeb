@@ -93,7 +93,7 @@ let pasoTutoria = 20;
         atributosContainer.classList.add("atributos-container");
 
         const atributos = `
-            <p>Fuerza: ${personaje.attributes.attack}</p>
+            <p>Fuerza: ${personaje.attributes.fuerza}</p>
             <p>Defensa: ${personaje.attributes.defense}</p>
             <p>Agilidad: ${personaje.attributes.agility}</p>
             <p>Concentración: ${personaje.attributes.concentration}</p>
@@ -357,10 +357,13 @@ let pasoTutoria = 20;
                           ,window.gameState.player.attributes.manaMax);
           break;
       case 'Ojetos Claves':
-        console.log(obj.item.action);
+        //console.log(obj.item.action);
         switch(obj.item.action){
           case 'Habilidad':
             //crear habilidad y añadirla al usuario
+            window.addSkill(obj.item.func());
+
+            console.log("Crear Habilidad");
             break;
           default:
             console.error("Tipo de accion no valido");

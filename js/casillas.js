@@ -33,7 +33,7 @@ function loadCellEvents(casilla_, params){
 	//Comprobar si aún estamos en el tutorial
 	if (params && params.tutorial){
 		window.gameState.currentTutorialSecene = 3
-		console.log("Cambiando");
+		//console.log("Cambiando");
 		Tutorial.startTutorial(3);
 		/*
 		loardTutorialEscen(casilla_);

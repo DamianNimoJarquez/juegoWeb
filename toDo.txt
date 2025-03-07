@@ -1,8 +1,16 @@
-Continuar el inventario para que valla con el tutorial. En equipar y en Usar
-    
-    11- Al usarlo se realizará la acción que el objeto clave indique. En este caso aprender una habilidad. (esta función la podemos implementar más adelante)
-    12- Aparecería otro diálogo
-    13- Se cerraría el inventario, y, cuando el usuario lo vuelva a abrir manualmente estará funcionando con normalidad sin las restricciones de ahora del tutorial. Y continua el tutorial con la parte de las habilidades. El botón para abrir el inventario seguiría sin poder pulsarse.
+- Mostrar los atributos con los aumento del equipo
+- Mostrar diálogo de las habilidades
+- habilitar las habilidades para equiparlas y desequiparlas
+- Hacer que se equipe furigana.
+- Bloquear el panel de las habilidades
+- Tutorial de misiones
+    - Añadir misiones al panel
+    - Mostrar diálogo explicándo como funciona el panel.
+- Tutorial Guardar.
+    - Diálogo de Guardar
+    - Mostrar botón para guardar en el pueblo.
+    - Implementar guardar y cargar la partida.
 
-Mostrar los atributos con los aumento del equipo
+
+
 Probar las habilidades

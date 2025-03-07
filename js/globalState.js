@@ -13,7 +13,7 @@ window.gameState = {
 	  hpMax: 100,
       mana: 5,
 	  manaMax: 50,
-      attack: 10,
+      fuerza: 10,
       defense: 5,
       agility: 5,
       concentration: 5
@@ -30,6 +30,10 @@ window.gameState = {
 		// Ejemplo:
 		// { id: "quest_001", description: "Consigue 10 hierbas", progress: 3, total: 10 }
 	],
+	skills: {
+		//array con las habilidades
+		//{id: "furigana", description: "sasas", type: "Pasiva", ....}
+	},
   
     // Otras propiedades del jugador...
   },

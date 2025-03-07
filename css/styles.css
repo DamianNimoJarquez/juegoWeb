@@ -38,6 +38,18 @@ body, html {
   background-color: #f2f2f2;
   padding: 10px;
 }
+#left-panel h3, #right-panel h3 {
+  text-align: center;
+  margin: 10px 0;
+  padding: 10px 0;
+  font-family: 'Cinzel', serif; /* Ejemplo: una fuente temática, asegúrate de importarla si no está instalada */
+  font-size: 1.5em;
+  color: #fff;
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  border: 2px solid #fff;
+  border-radius: 5px;
+  text-shadow: 1px 1px 2px #000;
+}
 
 /* Panel Central */
 #center-panel {
@@ -135,20 +147,68 @@ body, html {
 /* Lista de habilidades */
 #abilities-list {
   list-style: none;
+  padding: 0;
 }
 
+/* Contenedor de cada habilidad */
 .ability {
-  padding: 5px;
+  padding: 10px;
   margin: 5px 0;
   cursor: pointer;
+  text-align: center;
+  position: relative;  /* Necesario para posicionar el tooltip */
+  border: 1px solid transparent;
+  transition: background 0.3s, border 0.3s;
 }
 
+/* Habilidades desbloqueadas */
 .ability.unlocked {
-  border: 1px solid #4CAF50;
+  border-color: #4CAF50;
 }
 
+/* Habilidades bloqueadas */
 .ability.locked {
   opacity: 0.5;
+}
+
+/* Habilidades activadas */
+.ability.activated {
+  background-color: #DFF0D8;  /* Color de fondo para habilidades activas */
+}
+
+/* Encabezado de la habilidad */
+.ability-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 1.2em;
+}
+
+/* Descripción breve */
+.ability-short-desc {
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* Tooltip de descripción extendida */
+.ability-tooltip {
+  display: none; /* Se oculta por defecto */
+  position: absolute;
+  top: 100%; /* Justo debajo del elemento */
+  left: 50%;
+  transform: translate(-50%, 5px);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 220px;
+  z-index: 100;
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+  font-size: 0.85em;
+  color: #333;
+}
+
+/* Mostrar el tooltip al pasar el ratón */
+.ability:hover .ability-tooltip {
+  display: block;
 }
 
 /* Lista de misiones */

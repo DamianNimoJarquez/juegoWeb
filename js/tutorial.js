@@ -14,80 +14,92 @@ const Tutorial = (function() {
         npcActual = window.gameState.npcs['Narrador'];
         showNextDialogue(centerPanel, npcActual, 'story', window.gameState.currentTutorialSecene);
     },
-    1: (centerPanel) => {
+    1: (centerPanel) => {console.log("1");
         currentScreenIndex = window.gameState.currentTutorialSecene = 1;
         npcActual = window.gameState.npcs['Maestro'];
         centerPanel.style.backgroundImage = "url('assets/images/img1.png')";
         showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
     },
-    2: (centerPanel) => {
+    2: (centerPanel) => {console.log("2");
 		currentScreenIndex = window.gameState.currentTutorialSecene = 2;
 		//window.gameState.currentTutorialSecene = 3;
 		//cargar el mapa
         window.changeGameState('map', { tutorial: true });
     },
-	3: (centerPanel) => {
+	3: (centerPanel) => {//Empieza el tutorial en el pueblo
 		currentScreenIndex = window.gameState.currentTutorialSecene;
 		npcActual = window.gameState.npcs['Maestro'];
 		//se mostrará el diálogo para decir que va a enseñarle el interface
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
-	4: (centerPanel) =>{
+	4: (centerPanel) =>{//Se muestra el interfaz y tutorial de atributos
 		currentScreenIndex = ++window.gameState.currentTutorialSecene;
 		//Se muestra el interface
-		HUD.inicializaHUD();
-		HUD.setActivetab('Armas');
+		mostrarInterfaceTutorial('Armas');
 		//se deshabilita el botón inventario para que no se pueda pulsar por ahora
-		inventarioBtn = document.getElementsByClassName('inventario-btn')[0]
-		inventarioBtn.disabled  = true;
+		deshabilitarInventario(true);
 		//se mostrarán los comentarios explicando los atributos
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 		//se indica que explicará como usar el inventario
 	},
-	5: (centerPanel) =>{
+	5: (centerPanel) =>{//se pide q abra el inventario
 		currentScreenIndex = ++window.gameState.currentTutorialSecene;
 		//mostrar diálogos
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
-	6: (centerPanel) =>{
+	6: (centerPanel) =>{//se limpia el interface y se habilita el botón del inventario
 		currentScreenIndex = ++window.gameState.currentTutorialSecene;
 		//Limpiamos el pane
 		centerPanel.innerHTML = ``;
 		//habilitar el botón
-		inventarioBtn = document.getElementsByClassName('inventario-btn')[0]
-		inventarioBtn.disabled  = false;
+		deshabilitarInventario(false);
 		
 	},
-	7: (centerPanel) =>{
+	7: (centerPanel) =>{//se muestra el tutorial sobre el interface del inventario
 		currentScreenIndex = window.gameState.currentTutorialSecene;
 		//showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex,true);
 	},
-	8: (centerPanel) =>{
+	8: (centerPanel) =>{//Se explica los beneficios de equipar el item
 		currentScreenIndex = window.gameState.currentTutorialSecene;
 		//deshabilitar de nuevo inventario.
-		inventarioBtn = document.getElementsByClassName('inventario-btn')[0]
-		inventarioBtn.disabled  = true;
+		deshabilitarInventario(true);
 		//dialgo de atributos y objetos claves
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
-	9: (centerPanel) =>{
+	9: (centerPanel) =>{//Se habilita el inventario de nuevo para que lo abra con objetos claves
 		currentScreenIndex = ++window.gameState.currentTutorialSecene;
 		console.log("Estamos en 9");
 		//Limpiamos el pane
 		centerPanel.innerHTML = ``;
-		HUD.inicializaHUD();
-		HUD.setActivetab('Ojetos Claves');
 		//objetos claves
+		mostrarInterfaceTutorial('Ojetos Claves');
 	},
-	10: (centerPanel) =>{
+	10: (centerPanel) =>{//se muestra el texto sobre el inventario
 		currentScreenIndex = window.gameState.currentTutorialSecene;
 		//mostrar texto usar objeto
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex,true);
 	},
+	11: (centerPanel) =>{//se muestra el interfaz de habilidades y se explican
+		currentScreenIndex = window.gameState.currentTutorialSecene;
+		//deshabilitar de nuevo inventario.
+		deshabilitarInventario(true);
+		//Crear el panel de habilidades
+		document.getElementById("left-panel").insertAdjacentHTML("afterbegin", "<h3>Habilidades</h3>");
+	}
 	
 	
 };
+
+function deshabilitarInventario(value){
+	//deshabilitar de nuevo inventario.
+	inventarioBtn = document.getElementsByClassName('inventario-btn')[0]
+	inventarioBtn.disabled  = value;
+}
+function mostrarInterfaceTutorial(categoria){
+	HUD.inicializaHUD();
+	HUD.setActivetab(categoria);
+}
 
 function mostrarMensajeSobreInventario(mensaje, callback) {
 	// Crear un overlay para el mensaje (z-index mayor que el inventario, por ejemplo, 3500)
