@@ -138,7 +138,7 @@ let pasoTutoria = 20;
         const equipamiento = `
             <p>Arma: ${personaje.equipment.Armas?.name || "Ninguna"}</p>
             <p>Armadura: ${personaje.equipment.Armaduras?.name || "Ninguna"}</p>
-            <p>accesorio: ${personaje.equipment.Accesorios?.name || "Ninguna"}</p>
+            <p>Accesorio: ${personaje.equipment.Accesorios?.name || "Ninguno"}</p>
         `;
 
         equipamientoContainer.innerHTML = equipamiento;
