@@ -25,11 +25,11 @@ window.gameState = {
       Armaduras: null,
       Accesorios: null
     },
-	activeQuests: [
+	activeQuests: {
 		// Array con las misiones activas y su progreso.
 		// Ejemplo:
 		// { id: "quest_001", description: "Consigue 10 hierbas", progress: 3, total: 10 }
-	],
+	},
 	skills: {
 		//array con las habilidades
 		//{id: "furigana", description: "sasas", type: "Pasiva", ....}

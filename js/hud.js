@@ -49,7 +49,7 @@ let pasoTutoria = 20;
       mostrarInventarioCategoria(activetab_);
     }
 
-    function inicializaHUD() {
+    function inicializaHUD(objActu_) {
         personaje = window.gameState.player;
         const bottomContainer = document.getElementById("bottom-info");
         bottomContainer.innerHTML = ""; // Limpiar antes de actualizar
@@ -91,14 +91,30 @@ let pasoTutoria = 20;
         //  Atributos del personaje
         const atributosContainer = document.createElement("div");
         atributosContainer.classList.add("atributos-container");
-
+        let aatributos = ``;
+        if(objActu_){
+         atributos = actulizarAtributosEquipados(objActu_);
+        }
+        else{
+         atributos = `
+            <p>Fuerza: ${personaje.attributes.fuerza}</p>
+            <p>Defensa: ${personaje.attributes.defense}</p>
+            <p>Agilidad: ${personaje.attributes.agility}</p>
+            <p>Concentración: ${personaje.attributes.concentration}</p>
+        `;
+        }
+/*
         const atributos = `
             <p>Fuerza: ${personaje.attributes.fuerza}</p>
             <p>Defensa: ${personaje.attributes.defense}</p>
             <p>Agilidad: ${personaje.attributes.agility}</p>
             <p>Concentración: ${personaje.attributes.concentration}</p>
         `;
-
+        const atributos = actualizarValoresAtributos("Fuerza", "fuerza", 0)+
+                          actualizarValoresAtributos("Defense", "defense", 0)+
+                          actualizarValoresAtributos("Agilidad", "agility", 0)+
+                          actualizarValoresAtributos("Concentración", "concentration", 0);
+*/
         atributosContainer.innerHTML = atributos;
 
         //  Icono para abrir el inventario
@@ -456,8 +472,10 @@ let pasoTutoria = 20;
             player.inventory[obj.item.id].item.equiped = true;
             player.inventory[currentEquipped.id].item.equiped = false;
             player.equipment[obj.item.type] = obj.item;
+            //Actualizar los valores de los atributos
+            //actulizarAtributosEquipados(obj);
             mostrarInventarioCategoria(obj.item.type);
-            inicializaHUD();
+            inicializaHUD(obj);
           }
         },obj,texto_);
       }
@@ -465,8 +483,10 @@ let pasoTutoria = 20;
         //equipar directamente
         player.equipment[obj.item.type] = obj.item;
         player.inventory[obj.item.id].item.equiped = true;
+        //Actualizar los valores de los atributos
+        //actulizarAtributosEquipados(obj);
         mostrarInventarioCategoria(obj.item.type);
-        inicializaHUD();
+        inicializaHUD(obj);
       }
       //una vez equipado, si estamos en el tutorial, cambiamos la escena
       if(window.gameState.currentTutorialSecene <= pasoTutoria){
@@ -475,6 +495,42 @@ let pasoTutoria = 20;
         window.changeGameState("tutorial");
         cerrarInventario();
       }
+    }
+    /**
+    * @param {String} atributoName - El nombre del atributo "Fuerza", "Defensa"...
+    * @param {String} color - el color #05f00c o #fa0404
+    * @param {Object} atributo - el atributo a añadir "fuerza", "defense", "agility" o "concentration"
+    * @param {Object} modificador - lo que varía el valor -15, 12....
+    */
+    function actualizarValoresAtributos(atributoName, atributo, modificador){
+      if(modificador === undefined || modificador === 0)
+        return `<p> ${atributoName}: <span>${personaje.attributes[atributo]}</span></p>`;
+
+      return `<p> ${atributoName}: 
+                          <span class="atributos-tooltip" style="color:${modificador < 0 ? "#fa0404":"#05f00c"}"}>
+                            ${personaje.attributes[atributo]+modificador}
+                            <span class="atributos-tooltip-content">
+                              Base: <span style="color:white;">${personaje.attributes[atributo]}</span><br>
+                              Equipo: <span style="color:${modificador < 0 ? "#fa0404":"#05f00c"};">${modificador}</span>
+                            </span>
+                          </span>
+                        </p>`;
+    }
+    function actulizarAtributosEquipados(obj){
+      let atributos = ``;
+      // Lista de atributos y sus claves correspondientes en el objeto
+      const atributosList = [
+        { name: "Fuerza", key: "fuerza", value: obj.item.atk },
+        { name: "Defensa", key: "defense", value: obj.item.def },
+        { name: "Agilidad", key: "agility", value: obj.item.agi },
+        { name: "Concentración", key: "concentration", value: obj.item.con }
+      ];
+      // Recorremos la lista de atributos y aplicamos la función de actualización
+      atributosList.forEach(atributo => {
+          atributos += actualizarValoresAtributos(atributo.name, atributo.key, atributo.value);
+      });
+      
+      return atributos;
     }
 
     /**

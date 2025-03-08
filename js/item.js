@@ -70,6 +70,8 @@ class Accessory extends Item {
     super(id, name, 'Accesorios', priceBuy, priceSell, info);
     this.def = value.def;
     this.atk = value.atk;
+    this.agi = value.agi;
+    this.con = value.con;
   }
 
   getDescription() {
@@ -173,6 +175,8 @@ window.ListItems = {
       priceSell: 60,
       atk: 3,
       def: 1,
+      agi: 0,
+      con: 0,
       info: "Aumenta levemente el ataque."
     }
   },

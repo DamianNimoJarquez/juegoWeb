@@ -1,4 +1,4 @@
-- Mostrar los atributos con los aumento del equipo
+- Mostrar la información actual en el panel superior
 - Tutorial de misiones
     - Añadir misiones al panel
     - Mostrar diálogo explicándo como funciona el panel.

@@ -293,10 +293,40 @@ body, html {
   border-radius: 10px;
   color: white;
   font-family: Arial, sans-serif;
+  user-select: none; /* Evita selección de texto */
 }
 /* Contenedores individuales dentro del HUD */
 .bar-container, .atributos-container, .equipamiento-container {
   text-align: center;
+}
+/* Tooltip para atributos */
+.atributos-tooltip {
+  position: relative;
+  cursor: help;
+  user-select: none; /* Evita selección de texto */
+}
+
+.atributos-tooltip-content {
+  visibility: hidden;
+  width: 150px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 12px;
+}
+
+.atributos-tooltip:hover .atributos-tooltip-content {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Botón del inventario */
