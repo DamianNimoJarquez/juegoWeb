@@ -6,7 +6,7 @@ window.gameState = {
   player: {
 	name: null,
     level: 1,
-    xp: 0,
+    xp: 40,
 	xpNextLevl: 100,
     attributes: {
       hp: 75,

@@ -83,7 +83,7 @@ let pasoTutoria = 20;
         xpContainer.classList.add("bar-container");
         xpContainer.innerHTML = `<span>XP:</span>
             <div class="bar">
-                <div id="xp-fill" class="bar-fill" style="width: ${(personaje.xp / personaje.xpMax) * 100}%">
+                <div id="xp-fill" class="bar-fill" style="width: ${(personaje.xp / personaje.xpNextLevl) * 100}%">
                     <div class="bar-text">${personaje.xp} / ${personaje.xpNextLevl}</div>
                 </div>
             </div>`;
