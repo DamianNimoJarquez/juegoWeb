@@ -136,11 +136,24 @@ const Tutorial = (function() {
 		//Limpiamos el pane
 		centerPanel.innerHTML = ``;
 		console.log('en 14');
+		//se añade la cabecera de las misiones que será el botón para abrirlo
+		document.getElementById("right-panel").insertAdjacentHTML("afterbegin", '<h3 id="missions-btn" class="disabled" style="pointer-events: none">Misiones INFO</h3>');
+		//agregarl la misión principal al pj
+		window.gameState.player.activeQuests[window.questList["story"]["story_01"].id] = window.questList["story"]["story_01"];
+		//La agregamos la lista de quest
+		Object.values(window.gameState.player.activeQuests).forEach(quest =>{ quest.addQuestTree();});
 		//mostrar diálogos misiones
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
-	15: (centerPanel) =>{
-		//Se cargan las misiones
+	15: (centerPanel) =>{console.log('en 15');
+		currentScreenIndex = ++window.gameState.currentTutorialSecene;
+		//Limpiamos el pane
+		centerPanel.innerHTML = ``;
+		//habilitamosmo el botón de la cabecera para que lo use
+		const missionHeader = document.getElementById("missions-btn");
+		missionHeader.classList.remove("disabled"); // Quita la clase de deshabilitado
+    	missionHeader.style.pointerEvents = "auto"; // Permite interacción
+		
 	}
 	
 	

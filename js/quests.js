@@ -115,13 +115,13 @@ class Quest{
         this.steps = steps;
         this.currentStep = 0;
         this.reward = reward;
-        this.active = false;
+        //this.active = false;
         this.completed = false;
     }
     getCurrentStep(){return this.steps[this.currentStep];}
     completeQuest(){
         this.completed = true;
-        this.active = false;
+        //this.active = false;
         console.log('Mision completada: ', this.name);
     }
     advanceStep(){
@@ -142,6 +142,18 @@ class Quest{
 
     actualizarProgreso(id_objetivo, cantidad){
         //comprobar para la clase base
+    }
+
+    addQuestTree(){
+        let listaQuestPanel = document.getElementById('missions-list');
+        const newLi = document.createElement('li'); // Crear un nuevo elemento <li>
+        newLi.classList.add('mission');
+        newLi.classList.add(this.completed ? 'completed' : this.type);
+        newLi.innerHTML = `
+        <div class="mission-header">${this.name}</div>
+        <div class="mission-short-desc">${this.steps[this.currentStep].description}</div>
+        `;
+        listaQuestPanel.appendChild(newLi);
     }
 }
 // Función factory para crear una Quest a partir de un objeto de datos
@@ -196,7 +208,7 @@ const datosPuebloInicial = {
     name: 'Pueblo Inicial',
     description: 'Familiarizarse con el pueblo',
     shortDesc: 'Sigue las instrucciones del Maestro',
-    type: 'Historia',
+    type: 'main',
     requisitos: { level: 1, fuerza: null, defense: null, agility: null, concentration: null },
     steps: [
       { objectiveType: "dialogo", target: "id_npcA", description: "Habla con NPC_A" },//paso 1

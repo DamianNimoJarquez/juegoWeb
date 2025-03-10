@@ -1,0 +1,84 @@
+
+/* Lista de habilidades */
+#abilities-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Contenedor de cada habilidad */
+  .ability {
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    text-align: center;
+    position: relative;  /* Necesario para posicionar el tooltip */
+    border: 1px solid transparent;
+    transition: background 0.3s, border 0.3s;
+  }
+  
+  /* Habilidades desbloqueadas */
+  .ability.unlocked {
+    border-color: #4CAF50;
+  }
+  
+  /* Habilidades bloqueadas */
+  .ability.locked {
+    opacity: 0.5;
+  }
+  
+  /* Habilidades activadas */
+  .ability.activated {
+    background-color: #DFF0D8;  /* Color de fondo para habilidades activas */
+  }
+  
+  /* Encabezado de la habilidad */
+  .ability-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+  }
+  
+  /* Descripción breve */
+  .ability-short-desc {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  /* Tooltip de descripción extendida */
+  .ability-tooltip {
+    display: none; /* Se oculta por defecto */
+    position: absolute;
+    top: 100%; /* Justo debajo del elemento */
+    left: 50%;
+    transform: translate(-50%, 5px);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 220px;
+    z-index: 100;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    font-size: 0.85em;
+    color: #333;
+  }
+  
+  /* Mostrar el tooltip al pasar el ratón */
+  .ability:hover .ability-tooltip {
+    display: block;
+  }
+  /* Habilidades equipadas */
+  .ability.equipped {
+    background-color: #DFF0D8;  /* Fondo verde claro para habilidades equipadas */
+    border-color: #4CAF50;  /* Borde verde si está equipada */
+    opacity: 1; /* Asegurarse de que esté completamente visible */
+  }
+  
+  /* Habilidades no equipadas */
+  .ability:not(.equipped) {
+    background-color: #f9f9f9;  /* Fondo por defecto */
+    border-color: #ccc;  /* Borde gris por defecto */
+    opacity: 0.7; /* Opcional: hacer que se vea un poco atenuada si no está equipada */
+  }
+  /* Deshabilita la interacción con la lista de habilidades */
+  .abilities-list.disabled {
+    pointer-events: none;
+  }

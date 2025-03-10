@@ -1,7 +1,5 @@
-- Mostrar la información actual en el panel superior
 - Tutorial de misiones
-    - Añadir misiones al panel
-    - Mostrar diálogo explicándo como funciona el panel.
+    - Añadir modal para abrir los detalles de las misioens como el inventario.
 - Tutorial Guardar.
     - Diálogo de Guardar
     - Mostrar botón para guardar en el pueblo.

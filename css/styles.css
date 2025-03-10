@@ -31,15 +31,22 @@ body, html {
 #main-content {
   display: flex;
   flex: 1;
+  overflow: hidden;
 }
 
 /* Panel Izquierdo y Derecho */
 #left-panel, #right-panel {
+  flex-shrink: 0; /* Evita que los paneles se encojan demasiado */
   width: 20%;
+  padding: 10px 0;
   background-color: #f2f2f2;
   padding: 10px;
+  user-select: none;
 }
-#left-panel h3, #right-panel h3 {
+
+#left-panel h3 {
+  display: block; /* Asegura que el elemento ocupe todo el ancho */
+  width: 100%; /* Ocupará todo el ancho del panel */
   text-align: center;
   margin: 10px 0;
   padding: 10px 0;
@@ -51,10 +58,42 @@ body, html {
   border-radius: 5px;
   text-shadow: 1px 1px 2px #000;
 }
+/* Hace que el h3 parezca clickeable */
+#right-panel h3 {
+  display: block; /* Asegura que el elemento ocupe todo el ancho */
+  width: 100%; /* Ocupará todo el ancho del panel */
+  text-align: center;
+  margin: 10px auto; /* Centra el margen horizontalmente */
+  padding: 10px 0;
+  font-family: 'Cinzel', serif; /* Ejemplo: una fuente temática, asegúrate de importarla si no está instalada */
+  font-size: 1.5em;
+  color: #fff;
+  background: linear-gradient(135deg, #2c3e50, #4ca1af);
+  border: 2px solid #fff;
+  border-radius: 5px;
+  text-shadow: 1px 1px 2px #000;
+  cursor: pointer; /* Cambia el cursor al de un enlace */
+  transition: background 0.3s, transform 0.2s; /* Suaviza los efectos */
+}
+
+/* Efecto al pasar el ratón (hover) */
+#right-panel h3:hover {
+  background: linear-gradient(135deg, #4ca1af, #2c3e50); /* Cambia el color */
+  transform: scale(1.05); /* Hace que se agrande un poco */
+}
+
+/* Estado deshabilitado */
+#right-panel h3.disabled {
+  cursor: not-allowed; /* Indica que no se puede hacer clic */
+  opacity: 0.5; /* Lo hace más tenue */
+  background: gray !important; /* Un color más apagado */
+}
 
 /* Panel Central */
 #center-panel {
-  flex: 1;
+  /*flex: 1;*/
+  flex-grow: 1; /* Permite que el panel central ocupe el espacio restante */
+  min-width: 0; /* Evita problemas de desbordamiento */
   display: flex;
   justify-content: center; /* Centra horizontalmente el contenido */
   align-items: center;    /* Centra verticalmente el contenido */
@@ -73,7 +112,6 @@ body, html {
   max-width: 100%; /* Asegura que el contenido no exceda el ancho del panel */
 }
 
-
 /* Zona Inferior: Atributos e Inventario */
 #bottom-info {
   background-color: #333;
@@ -87,25 +125,6 @@ body, html {
   display: none;
 }
 
-/* Cuadrícula del mapa */
-/*
-#map-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
-}
-
-.map-cell {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  width: 30%;
-  margin: 5px;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-}
-*/
 /* Cuadrícula del mapa */
 #map-grid {
   display: grid;
@@ -123,11 +142,6 @@ body, html {
   box-sizing: border-box;
 }
 
-
-
-
-
-
 /* Indicación de celdas visitadas */
 .map-cell.visited {
   background-color: #dff0d8;
@@ -143,442 +157,4 @@ body, html {
   padding: 10px;
   margin: 5px;
   cursor: pointer;
-}
-
-/* Lista de habilidades */
-#abilities-list {
-  list-style: none;
-  padding: 0;
-}
-
-/* Contenedor de cada habilidad */
-.ability {
-  padding: 10px;
-  margin: 5px 0;
-  cursor: pointer;
-  text-align: center;
-  position: relative;  /* Necesario para posicionar el tooltip */
-  border: 1px solid transparent;
-  transition: background 0.3s, border 0.3s;
-}
-
-/* Habilidades desbloqueadas */
-.ability.unlocked {
-  border-color: #4CAF50;
-}
-
-/* Habilidades bloqueadas */
-.ability.locked {
-  opacity: 0.5;
-}
-
-/* Habilidades activadas */
-.ability.activated {
-  background-color: #DFF0D8;  /* Color de fondo para habilidades activas */
-}
-
-/* Encabezado de la habilidad */
-.ability-header {
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 1.2em;
-}
-
-/* Descripción breve */
-.ability-short-desc {
-  font-size: 0.9em;
-  color: #666;
-}
-
-/* Tooltip de descripción extendida */
-.ability-tooltip {
-  display: none; /* Se oculta por defecto */
-  position: absolute;
-  top: 100%; /* Justo debajo del elemento */
-  left: 50%;
-  transform: translate(-50%, 5px);
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 220px;
-  z-index: 100;
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
-  font-size: 0.85em;
-  color: #333;
-}
-
-/* Mostrar el tooltip al pasar el ratón */
-.ability:hover .ability-tooltip {
-  display: block;
-}
-/* Habilidades equipadas */
-.ability.equipped {
-  background-color: #DFF0D8;  /* Fondo verde claro para habilidades equipadas */
-  border-color: #4CAF50;  /* Borde verde si está equipada */
-  opacity: 1; /* Asegurarse de que esté completamente visible */
-}
-
-/* Habilidades no equipadas */
-.ability:not(.equipped) {
-  background-color: #f9f9f9;  /* Fondo por defecto */
-  border-color: #ccc;  /* Borde gris por defecto */
-  opacity: 0.7; /* Opcional: hacer que se vea un poco atenuada si no está equipada */
-}
-/* Deshabilita la interacción con la lista de habilidades */
-.abilities-list.disabled {
-  pointer-events: none;
-}
-
-/* Lista de misiones */
-#missions-list {
-  list-style: none;
-}
-
-.mission {
-  padding: 5px;
-  margin: 5px 0;
-}
-
-/* Barras de atributos */
-/*
-.bar-container {
-  display: inline-block;
-  margin: 0 10px;
-  vertical-align: middle;
-}
-*/
-.bar-container {
-  display: flex;  /* Convierte el contenedor en un flexbox */
-  align-items: center;  /* Centra verticalmente los elementos */
-  margin: 0 10px;
-}
-
-.bar-container span {
-  display: inline-block;
-  min-width: 40px;  /* Ajusta según sea necesario para alinear mejor */
-  text-align: right;
-}
-.bar {
-  position: relative; /* Necesario para posicionar el texto de forma absoluta */
-  display: inline-block;
-  width: 150px;
-  height: 20px;
-  background-color: #555;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-left: 5px;
-}
-/* Relleno de la barra */
-.bar-fill {
-  height: 100%;
-  background-color: inherit; /* Se define en los selectores específicos (#hp-fill, etc.) */
-}
-
-/* Texto de la barra, centrado en el contenedor */
-.bar-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  font-weight: bold;
-  pointer-events: none; /* Para que el texto no interfiera con clics sobre la barra */
-}
-
-#hp-fill {
-  background-color: green;
-}
-
-#mana-fill {
-  background-color: blue;
-}
-
-#xp-fill {
-  background-color: orange;
-}
-
-.hud-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: rgba(0,0,0,0.8);
-  padding: 10px;
-  border-radius: 10px;
-  color: white;
-  font-family: Arial, sans-serif;
-  user-select: none; /* Evita selección de texto */
-}
-/* Contenedores individuales dentro del HUD */
-.atributos-container p, .equipamiento-container p {
-  display: flex;
-  justify-content: flex-end; /* Alinea todo a la derecha */
-  align-items: center; /* Centra verticalmente */
-  width: 100%;
-  padding: 2px 10px;
-}
-
-.atributos-container p span:first-child, .equipamiento-container p span:first-child {
-  min-width: 120px; /* Ajusta el ancho del nombre del atributo */
-  text-align: right; /* Alinea el texto a la derecha */
-}
-
-.atributos-container p span:last-child, .equipamiento-container p span:last-child {
-  min-width: 40px; /* Ajusta el ancho del valor */
-  text-align: center; /* Alinea el texto del valor a la izquierda */
-  margin-left: 5px; /* Espacio entre el nombre y el valor */
-}
-
-
-
-.bar-container, .equipamiento-container {
-  text-align: center;
-}
-/* Tooltip para atributos */
-.atributos-tooltip {
-  position: relative;
-  cursor: help;
-  user-select: none; /* Evita selección de texto */
-}
-
-.atributos-tooltip-content {
-  visibility: hidden;
-  width: 150px;
-  background-color: #333;
-  color: #fff;
-  text-align: left;
-  padding: 5px;
-  border-radius: 5px;
-  position: absolute;
-  z-index: 10;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  font-size: 12px;
-}
-
-.atributos-tooltip:hover .atributos-tooltip-content {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Botón del inventario */
-.inventario-btn {
-  background-color: #444;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.inventario-btn:hover {
-  background-color: #666;
-}
-
-/* Equipamiento */
-.equipamiento-container p {
-  margin: 5px 0;
-}
-
-.ocult-btn {
-  display: block;       /* Hace que ocupe toda la línea */
-  margin-top: 10px;      /* Espacio arriba para separarlo del botón de inventario */
-  /* Otros estilos según tu diseño */
-}
-.botones-container {
-  display: flex;
-  flex-direction: column; /* Apila los botones verticalmente */
-  align-items: center;
-  gap: 10px;  /* Espacio entre ellos */
-}
-
-/* Inventario */
-/* Overlay para el inventario */
-#inventory-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.7);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Contenedor modal del inventario */
-#inventory-modal {
-  background-color: #fff;
-  width: 80%;
-  max-width: 600px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  text-align: center;
-}
-
-/* Pestañas de inventario */
-#inventory-tabs {
-  display: flex;
-  justify-content: space-around;
-  background: linear-gradient(135deg, #1a1a1a, #333);
-  border-bottom: 2px solid #666;
-  margin-bottom: 20px;
-  padding: 5px;
-}
-
-.inventory-tab-btn {
-  flex: 1;
-  padding: 10px;
-  color: #fff;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.inventory-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.inventory-tab-btn.active {
-  background: linear-gradient(135deg, #444, #222);
-  border-bottom: 3px solid #f80;
-}
-
-/* Contenedor de ítems */
-#inventory-items {
-  max-height: 300px;
-  overflow-y: auto;
-  text-align: left;
-}
-
-/* Cada ítem del inventario */
-.inventory-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.inventory-item:hover {
-  background-color: #f0f0f0;
-}
-
-.item-info {
-  flex: 1;
-}
-
-.item-qty {
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-/* Botón de cerrar inventario */
-#close-inventory-btn {
-  background-color: #444;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-#close-inventory-btn:hover {
-  background-color: #666;
-}
-#item-options-popup {
-  position: absolute;
-  background-color: #666;
-  border: 1px solid #ccc;
-  padding: 10px;
-  z-index: 2000;
-  box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
-}
-.botton-item-option{
-  margin: '5px';
-  flex: 1;
-  padding: 10px;
-  color: #fff;
-  background: none;
-  border: none;
-  cursor: pointer;
-  gap: 10px;
-}
-
-/* Overlay para el modal de confirmación */
-.confirm-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 3000;
-}
-/* Modal de confirmación */
-.confirm-modal {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  text-align: center;
-}
-/*Flechas atributos*/
-/*
-.flechaArriba {
-  background: transparent;
-  display: inline-block;
-  border: 25px solid transparent;
-  border-top-color: #05f00c;
-}
-  */
-.flechaArriba {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Pseudo-elemento para la flecha */
-.flechaArriba::before {
-  content: "";
-  display: inline-block;
-  vertical-align: middle;
-  /* Ajusta las dimensiones y forma para que la flecha apunte a la izquierda */
-  width: 0;
-  height: 0;
-  /* Creamos la flecha apuntando hacia arriba usando border */
-  border: 10px solid transparent;
-   /* Esto hace que la flecha apunte hacia arriba */
-  border-bottom-color: #05f00c;
-  margin-right: 5px;          /* Espacio entre la flecha y el texto */
-  position: relative;
-  top: -6px; /* Ajusta este valor según necesites */
-}
-
-.flechaAbajo {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.flechaAbajo::before {
-  content: "";
-  display: inline-block;
-  vertical-align: middle;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
-  border-top-color: #fa0404;  /* La flecha apuntará hacia abajo si usamos border-top-color */
-  margin-right: 5px;
-  position: relative;
-  top: 5px; /* Ajusta el valor según necesites para posicionarla */
 }
