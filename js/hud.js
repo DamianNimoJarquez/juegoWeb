@@ -91,31 +91,8 @@ let pasoTutoria = 20;
         //  Atributos del personaje
         const atributosContainer = document.createElement("div");
         atributosContainer.classList.add("atributos-container");
-        let aatributos = ``;
-        if(objActu_){
-         atributos = actulizarAtributosEquipados(objActu_);
-        }
-        else{
-         atributos = `
-            <p>Fuerza: ${personaje.attributes.fuerza}</p>
-            <p>Defensa: ${personaje.attributes.defense}</p>
-            <p>Agilidad: ${personaje.attributes.agility}</p>
-            <p>Concentración: ${personaje.attributes.concentration}</p>
-        `;
-        }
-/*
-        const atributos = `
-            <p>Fuerza: ${personaje.attributes.fuerza}</p>
-            <p>Defensa: ${personaje.attributes.defense}</p>
-            <p>Agilidad: ${personaje.attributes.agility}</p>
-            <p>Concentración: ${personaje.attributes.concentration}</p>
-        `;
-        const atributos = actualizarValoresAtributos("Fuerza", "fuerza", 0)+
-                          actualizarValoresAtributos("Defense", "defense", 0)+
-                          actualizarValoresAtributos("Agilidad", "agility", 0)+
-                          actualizarValoresAtributos("Concentración", "concentration", 0);
-*/
-        atributosContainer.innerHTML = atributos;
+        
+        atributosContainer.innerHTML = actulizarAtributosEquipados();
 
         //  Icono para abrir el inventario
         const inventarioIcon = document.createElement("button");
@@ -135,13 +112,8 @@ let pasoTutoria = 20;
         //  Equipamiento equipado
         const equipamientoContainer = document.createElement("div");
         equipamientoContainer.classList.add("equipamiento-container");
-        const equipamiento = `
-            <p>Arma: ${personaje.equipment.Armas?.name || "Ninguna"}</p>
-            <p>Armadura: ${personaje.equipment.Armaduras?.name || "Ninguna"}</p>
-            <p>Accesorio: ${personaje.equipment.Accesorios?.name || "Ninguno"}</p>
-        `;
 
-        equipamientoContainer.innerHTML = equipamiento;
+        equipamientoContainer.innerHTML = actualizarEquipoInfo();
 
         //  Añadir todos los elementos al HUD
         hudContainer.appendChild(hpContainer);
@@ -473,9 +445,8 @@ let pasoTutoria = 20;
             player.inventory[currentEquipped.id].item.equiped = false;
             player.equipment[obj.item.type] = obj.item;
             //Actualizar los valores de los atributos
-            //actulizarAtributosEquipados(obj);
             mostrarInventarioCategoria(obj.item.type);
-            inicializaHUD(obj);
+            inicializaHUD();
           }
         },obj,texto_);
       }
@@ -484,9 +455,8 @@ let pasoTutoria = 20;
         player.equipment[obj.item.type] = obj.item;
         player.inventory[obj.item.id].item.equiped = true;
         //Actualizar los valores de los atributos
-        //actulizarAtributosEquipados(obj);
         mostrarInventarioCategoria(obj.item.type);
-        inicializaHUD(obj);
+        inicializaHUD();
       }
       //una vez equipado, si estamos en el tutorial, cambiamos la escena
       if(window.gameState.currentTutorialSecene <= pasoTutoria){
@@ -496,6 +466,54 @@ let pasoTutoria = 20;
         cerrarInventario();
       }
     }
+    function actualizarEquipoInfo(){
+        return `
+          <p>Arma: 
+            ${window.gameState.player.equipment.Armas ? 
+                `<span class="atributos-tooltip" style="color:#05f00c">
+                    ${window.gameState.player.equipment.Armas.name}
+                    <span class="atributos-tooltip-content">
+                        ${window.gameState.player.equipment.Armas.atk ? `Atk: <span style="color:${window.gameState.player.equipment.Armas.atk < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armas.atk}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Armas.def ? `Def: <span style="color:${window.gameState.player.equipment.Armas.def < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armas.def}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Armas.agi ? `Agi: <span style="color:${window.gameState.player.equipment.Armas.agi < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armas.agi}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Armas.con ? `Con: <span style="color:${window.gameState.player.equipment.Armas.con < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armas.con}</span><br>` : ""}
+                    </span>
+                </span>` :
+                "Ninguna"
+            }
+        </p>
+
+        <p>Armadura: 
+            ${window.gameState.player.equipment.Armaduras ? 
+                `<span class="atributos-tooltip" style="color:#05f00c">
+                    ${window.gameState.player.equipment.Armaduras.name}
+                    <span class="atributos-tooltip-content">
+                        ${window.gameState.player.equipment.Armaduras.atk ? `Atk: <span style="color:${window.gameState.player.equipment.Armaduras.atk < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armaduras.atk}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Armaduras.def ? `Def: <span style="color:${window.gameState.player.equipment.Armaduras.def < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armaduras.def}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Armaduras.agi ? `Agi: <span style="color:${window.gameState.player.equipment.Armaduras.agi < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armaduras.agi}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Armaduras.con ? `Con: <span style="color:${window.gameState.player.equipment.Armaduras.con < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Armaduras.con}</span><br>` : ""}
+                    </span>
+                </span>` :
+                "Ninguna"
+            }
+        </p>
+
+        <p>Accesorio: 
+            ${window.gameState.player.equipment.Accesorios ? 
+                `<span class="atributos-tooltip" style="color:#05f00c">
+                    ${window.gameState.player.equipment.Accesorios.name}
+                    <span class="atributos-tooltip-content">
+                        ${window.gameState.player.equipment.Accesorios.atk ? `Atk: <span style="color:${window.gameState.player.equipment.Accesorios.atk < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Accesorios.atk}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Accesorios.def ? `Def: <span style="color:${window.gameState.player.equipment.Accesorios.def < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Accesorios.def}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Accesorios.agi ? `Agi: <span style="color:${window.gameState.player.equipment.Accesorios.agi < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Accesorios.agi}</span><br>` : ""}
+                        ${window.gameState.player.equipment.Accesorios.con ? `Con: <span style="color:${window.gameState.player.equipment.Accesorios.con < 0 ? "#fa0404" : "#05f00c"};">${window.gameState.player.equipment.Accesorios.con}</span><br>` : ""}
+                    </span>
+                </span>` :
+                "Ninguna"
+            }
+        </p>
+        `;
+    }
     /**
     * @param {String} atributoName - El nombre del atributo "Fuerza", "Defensa"...
     * @param {String} color - el color #05f00c o #fa0404
@@ -503,9 +521,8 @@ let pasoTutoria = 20;
     * @param {Object} modificador - lo que varía el valor -15, 12....
     */
     function actualizarValoresAtributos(atributoName, atributo, modificador){
-      if(modificador === undefined || modificador === 0)
+      if(modificador === undefined || modificador === 0 || modificador === null)
         return `<p> ${atributoName}: <span>${personaje.attributes[atributo]}</span></p>`;
-
       return `<p> ${atributoName}: 
                           <span class="atributos-tooltip" style="color:${modificador < 0 ? "#fa0404":"#05f00c"}"}>
                             ${personaje.attributes[atributo]+modificador}
@@ -516,14 +533,14 @@ let pasoTutoria = 20;
                           </span>
                         </p>`;
     }
-    function actulizarAtributosEquipados(obj){
+    function actulizarAtributosEquipados(){
       let atributos = ``;
       // Lista de atributos y sus claves correspondientes en el objeto
       const atributosList = [
-        { name: "Fuerza", key: "fuerza", value: obj.item.atk },
-        { name: "Defensa", key: "defense", value: obj.item.def },
-        { name: "Agilidad", key: "agility", value: obj.item.agi },
-        { name: "Concentración", key: "concentration", value: obj.item.con }
+        { name: "Fuerza", key: "fuerza", value: (window.gameState.player.equipment.Armas?.atk ?? 0)+(window.gameState.player.equipment.Armaduras?.atk ?? 0)+(window.gameState.player.equipment.Accesorios?.atk ?? 0)},
+        { name: "Defensa", key: "defense", value: (window.gameState.player.equipment.Armas?.def?? 0) + (window.gameState.player.equipment.Armaduras?.def?? 0) + (window.gameState.player.equipment.Accesorios?.def?? 0)},
+        { name: "Agilidad", key: "agility", value: (window.gameState.player.equipment.Armas?.agi?? 0) + (window.gameState.player.equipment.Armaduras?.agi?? 0) + (window.gameState.player.equipment.Accesorios?.agi?? 0)},
+        { name: "Concentración", key: "concentration", value: (window.gameState.player.equipment.Armas?.con?? 0) + (window.gameState.player.equipment.Armaduras?.con?? 0) + (window.gameState.player.equipment.Accesorios?.con?? 0)}
       ];
       // Recorremos la lista de atributos y aplicamos la función de actualización
       atributosList.forEach(atributo => {

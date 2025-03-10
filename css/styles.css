@@ -23,6 +23,7 @@ body, html {
   background-color: #333;
   color: #fff;
   padding: 10px;
+  user-select: none;
   text-align: center;
 }
 
@@ -239,12 +240,24 @@ body, html {
 }
 
 /* Barras de atributos */
+/*
 .bar-container {
   display: inline-block;
   margin: 0 10px;
   vertical-align: middle;
 }
+*/
+.bar-container {
+  display: flex;  /* Convierte el contenedor en un flexbox */
+  align-items: center;  /* Centra verticalmente los elementos */
+  margin: 0 10px;
+}
 
+.bar-container span {
+  display: inline-block;
+  min-width: 40px;  /* Ajusta según sea necesario para alinear mejor */
+  text-align: right;
+}
 .bar {
   position: relative; /* Necesario para posicionar el texto de forma absoluta */
   display: inline-block;
@@ -296,7 +309,28 @@ body, html {
   user-select: none; /* Evita selección de texto */
 }
 /* Contenedores individuales dentro del HUD */
-.bar-container, .atributos-container, .equipamiento-container {
+.atributos-container p, .equipamiento-container p {
+  display: flex;
+  justify-content: flex-end; /* Alinea todo a la derecha */
+  align-items: center; /* Centra verticalmente */
+  width: 100%;
+  padding: 2px 10px;
+}
+
+.atributos-container p span:first-child, .equipamiento-container p span:first-child {
+  min-width: 120px; /* Ajusta el ancho del nombre del atributo */
+  text-align: right; /* Alinea el texto a la derecha */
+}
+
+.atributos-container p span:last-child, .equipamiento-container p span:last-child {
+  min-width: 40px; /* Ajusta el ancho del valor */
+  text-align: center; /* Alinea el texto del valor a la izquierda */
+  margin-left: 5px; /* Espacio entre el nombre y el valor */
+}
+
+
+
+.bar-container, .equipamiento-container {
   text-align: center;
 }
 /* Tooltip para atributos */

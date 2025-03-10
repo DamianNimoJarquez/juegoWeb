@@ -65,6 +65,7 @@ function iniciarPueblo(){
 	gameState.map[0][Math.floor(tamMapa/2)].name = "Pueblo Inicial";
 	gameState.map[0][Math.floor(tamMapa/2)].backgroundImage ="assets/images/img2.png";
 	gameState.map[0][Math.floor(tamMapa/2)].events = window.Events["town"];
+	gameState.map[0][Math.floor(tamMapa/2)].levelEnemys = '0'
 	//Añadir el contenido al pueblo
 }
 

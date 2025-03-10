@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cellId: "0-2",
     tutorial: true
   }
-true
   Tutorial.createNPCIntro();
   window.gameState.npcs['Maestro'].currentDialogueIndex.beforeIndiceDialogos = 1;
   window.gameState.npcs['Maestro'].currentDialogueIndex.story.i=1;

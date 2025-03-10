@@ -30,6 +30,8 @@ function loadCellImage(casilla_){
 }
 
 function loadCellEvents(casilla_, params){
+	//actualizar la casilla actual
+	window.gameState.currentCellId = casilla_.id;
 	//Comprobar si aún estamos en el tutorial
 	if (params && params.tutorial){
 		window.gameState.currentTutorialSecene = 3

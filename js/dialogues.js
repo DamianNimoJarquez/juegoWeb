@@ -46,6 +46,9 @@ window.dialogues = {
 			`<p>Explica habilidades`,
 			`<p>Pulsar sobre Furigana para equiparla`
 		],
+		[
+			`<p>Explicar panel superior`,
+		],
 		[//Explicación sobre las misiones
 			`<p>Explicar las misiones`
 		],

@@ -109,7 +109,7 @@ const Tutorial = (function() {
 		//habilitar el panel de skills
 		listaSkillsPanel.classList.remove('disabled');
 	},
-	13: (centerPanel) =>{
+	13: (centerPanel) =>{console.log('en 13');
 		currentScreenIndex = window.gameState.currentTutorialSecene;
 		const listaSkillsPanel = document.querySelector('.abilities-list');
 		//deshabilitar de nuevo el panel de skills
@@ -126,15 +126,22 @@ const Tutorial = (function() {
 
 			skill.addEventListener('click', toggleEquiparHabilidad);
 		});
-		//mostrar diálogos misiones
+		//Mostrar panel superior
+		gameState.map.flat().find(cell => cell.id == gameState.currentCellId).updateTopPanel()
+		//mostrar diálogos Texto top
 		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
-	14: (centerPanel) =>{
+	14: (centerPanel) =>{ //Mostrar panel superior
 		currentScreenIndex = ++window.gameState.currentTutorialSecene;
 		//Limpiamos el pane
 		centerPanel.innerHTML = ``;
 		console.log('en 14');
+		//mostrar diálogos misiones
+		showNextDialogue(centerPanel, npcActual, 'story', currentScreenIndex);
 	},
+	15: (centerPanel) =>{
+		//Se cargan las misiones
+	}
 	
 	
 };
